@@ -2,145 +2,190 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import json
+import os
 import re
-from pathlib import Path
+import json
+from difflib import SequenceMatcher
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-# Load dataset kata kasar
-KASAR_FILE = Path(__file__).parent / 'dataset_kasar.json'
-SPAM_FILE = Path(__file__).parent / 'dataset_spam.json'
+# =============================
+# LOAD DATASET
+# =============================
+BASE_DIR = os.path.dirname(__file__)
 
-def load_dataset(filepath):
-    """Load dataset dari JSON file"""
-    try:
-        with open(filepath, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except:
-        return []
+with open(os.path.join(BASE_DIR, 'dataset_kasar.json'), encoding='utf-8') as f:
+    kasar_list = json.load(f)
 
-def analyze_text(text):
-    """Analyze text untuk kata kasar, spam, dan buat clean version"""
-    
-    # Load kata kasar dan spam dataset
-    kasar_list = load_dataset(KASAR_FILE)
-    spam_list = load_dataset(SPAM_FILE)
-    
+with open(os.path.join(BASE_DIR, 'dataset_spam.json'), encoding='utf-8') as f:
+    spam_data = json.load(f)
+
+spam_keywords = spam_data["keywords"]
+spam_patterns = spam_data["patterns"]
+
+# =============================
+# PREPROCESSING
+# =============================
+def preprocess(text):
+    text = text.lower()
+    text = re.sub(r'[^a-z0-9\s]', '', text)
+
+    # deduplikasi karakter max 2
+    text = re.sub(r'(.)\1{2,}', r'\1\1', text)
+
+    tokens = text.split()
+    return tokens
+
+def generate_ngrams(tokens, n=2):
+    return [' '.join(tokens[i:i+n]) for i in range(len(tokens)-n+1)]
+
+# =============================
+# MAPPING ANGKA
+# =============================
+def map_angka(tokens):
+    mapping = {'1':'i','4':'a','5':'s','0':'o','3':'e'}
+    new_tokens = []
+
+    for word in tokens:
+        # kalau pure angka jangan diubah
+        if re.fullmatch(r'\d+', word):
+            new_tokens.append(word)
+        else:
+            for k,v in mapping.items():
+                word = word.replace(k,v)
+            new_tokens.append(word)
+
+    return new_tokens
+
+# =============================
+# FILTER KATA KASAR (FUZZY)
+# =============================
+def check_kasar(tokens):
+    for word in tokens:
+        for kasar in kasar_list:
+            similarity = SequenceMatcher(None, word, kasar).ratio()
+            if similarity >= 0.8:
+                return True
+    return False
+
+# =============================
+# SPAM DETECTION (ADVANCED)
+# =============================
+def check_spam(text):
     text_lower = text.lower()
-    is_kasar = False
-    is_spam = False
-    clean_text = text
     
-    # Check untuk kata kasar
-    if kasar_list:
-        for kata in kasar_list:
-            if isinstance(kata, dict):
-                kata_str = kata.get('kata', '').lower()
-            else:
-                kata_str = str(kata).lower()
-            
-            if kata_str and kata_str in text_lower:
-                is_kasar = True
-                # Replace kata kasar dengan asterisk
-                clean_text = re.sub(
-                    rf'\b{re.escape(kata_str)}\b',
-                    '*' * len(kata_str),
-                    clean_text,
-                    flags=re.IGNORECASE
-                )
+    # tokenisasi
+    tokens = text_lower.split()
     
-    # Check untuk spam patterns
-    spam_patterns = [
-        r'(?:http|https)://',  # URLs
-        r'bit\.ly|tinyurl|goo\.gl',  # URL shorteners
-        r'(?:whatsapp|wa)\.me',  # WhatsApp links
-        r'\b(?:follow|like|share|subscribe)\s+(?:for|my)',  # Spam phishing
-        r'(?:jangan|hati|awas)[- ]?(?:lupa|lupakan)',  # Spam patterns
-    ]
-    
-    # Normalize spam dataset: support both {"keywords":[], "patterns":[]} and list formats
-    spam_keywords_from_file = []
-    spam_patterns_from_file = []
-    if isinstance(spam_list, dict):
-        spam_keywords_from_file = spam_list.get('keywords', []) or []
-        spam_patterns_from_file = spam_list.get('patterns', []) or []
-    elif isinstance(spam_list, list):
-        for item in spam_list:
-            if isinstance(item, dict):
-                # accept objects with 'pattern' key
-                pat = item.get('pattern', '')
-                if pat:
-                    spam_patterns_from_file.append(pat)
-            else:
-                spam_patterns_from_file.append(str(item))
+    # bigram
+    bigrams = generate_ngrams(tokens, 2)
 
-    # Check keywords (simple substring match)
-    if spam_keywords_from_file:
-        for kw in spam_keywords_from_file:
-            if not kw:
-                continue
-            if kw.lower() in text_lower:
-                is_spam = True
-                break
+    # ===== REGEX PATTERN =====
+    for p in spam_patterns:
+        if re.search(p, text_lower):
+            return True
 
-    # Check regex patterns from file
-    if not is_spam and spam_patterns_from_file:
-        for pattern in spam_patterns_from_file:
-            if not pattern:
-                continue
-            if re.search(pattern, text_lower, re.IGNORECASE):
-                is_spam = True
-                break
+    # ===== KEYWORD CHECK =====
+    for keyword in spam_keywords:
+        # cek langsung
+        if keyword in text_lower:
+            return True
+        
+        # cek bigram
+        if keyword in bigrams:
+            return True
+
+    return False
+
+# =============================
+# COSINE SIMILARITY
+# =============================
+def hitung_cosine(text1, text2):
+    vectorizer = CountVectorizer().fit_transform([text1, text2])
+    vectors = vectorizer.toarray()
     
-    # Check basic spam patterns
-    if not is_spam:
-        for pattern in spam_patterns:
-            if re.search(pattern, text_lower):
-                is_spam = True
-                break
+    cosine = cosine_similarity(vectors)
     
-    # Determine status
-    if is_kasar or is_spam:
-        status = 'Rejected'  
-    else:
-        status = 'Approved'  
-    
-    # Calculate cosine score (simplified - just word similarity)
-    skor_cosine = 0.0
-    if not is_kasar and not is_spam:
-        skor_cosine = 1.0
-    elif is_kasar:
-        skor_cosine = 0.3
+    return cosine[0][1]
+
+# =============================
+# MAIN PROCESS
+# =============================
+def main():
+    if len(sys.argv) < 3:
+        print(json.dumps({
+            "clean_text": None,
+            "status": "Error",
+            "is_spam": 0,
+            "is_kasar": 0,
+            "skor_cosine": 0
+        }))
+        return
+
+    input_text = sys.argv[1]
+    file_path = sys.argv[2]
+
+    # =========================
+    # LOAD HISTORY
+    # =========================
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            old_comments = json.load(f)
+    except:
+        old_comments = []
+
+    # =========================
+    # PREPROCESS PIPELINE
+    # =========================
+    tokens = preprocess(input_text)
+    tokens = map_angka(tokens)
+
+    clean_text = " ".join(tokens)
+
+    # =========================
+    # DETECTION
+    # =========================
+    is_kasar = check_kasar(tokens)
+    is_spam = check_spam(input_text)
+
+    status = "Approved"
+    max_cosine = 0
+
+    # =========================
+    # DUPLICATE CHECK
+    # =========================
+    if len(tokens) > 4:
+        for old in old_comments:
+            score = hitung_cosine(clean_text, old)
+            if score > max_cosine:
+                max_cosine = score
+
+        if max_cosine >= 0.9:
+            status = "Duplikat"
+
+    # =========================
+    # PRIORITY LOGIC (PENTING!)
+    # =========================
+    if is_kasar:
+        status = "Rejected"
     elif is_spam:
-        skor_cosine = 0.2
-    
-    return {
-        'clean_text': clean_text,
-        'is_kasar': 1 if is_kasar else 0,
-        'is_spam': 1 if is_spam else 0,
-        'status': status,
-        'skor_cosine': skor_cosine
+        status = "Spam"
+
+    # =========================
+    # OUTPUT
+    # =========================
+    result = {
+        "clean_text": clean_text,
+        "status": status,
+        "is_spam": int(is_spam),
+        "is_kasar": int(is_kasar),
+        "skor_cosine": round(max_cosine, 3)
     }
 
-def main():
-    if len(sys.argv) < 2:
-        result = {
-            'clean_text': None,
-            'is_kasar': 0,
-            'is_spam': 0,
-            'status': 'Error',
-            'skor_cosine': 0.0,
-            'error': 'No text provided'
-        }
-        print(json.dumps(result, ensure_ascii=False))
-        sys.exit(1)
-    
-    text = sys.argv[1]
-    
-    # Analyze text
-    result = analyze_text(text)
-    
-    # Output as JSON
     print(json.dumps(result, ensure_ascii=False))
 
-if __name__ == '__main__':
+# =============================
+# ENTRY POINT
+# =============================
+if __name__ == "__main__":
     main()

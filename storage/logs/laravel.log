@@ -1,0 +1,19 @@
+[2026-04-07 14:37:07] production.ERROR: The provided cwd "D:\laragon\laragon\www\sentimen-pipeline\public" does not exist. {"exception":"[object] (Symfony\\Component\\Process\\Exception\\RuntimeException(code: 0): The provided cwd \"D:\\laragon\\laragon\\www\\sentimen-pipeline\\public\" does not exist. at D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\symfony\\process\\Process.php:343)
+[stacktrace]
+#0 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\ServeCommand.php(154): Symfony\\Component\\Process\\Process->start(Object(Closure))
+#1 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\ServeCommand.php(93): Illuminate\\Foundation\\Console\\ServeCommand->startProcess(false)
+#2 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Foundation\\Console\\ServeCommand->handle()
+#3 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#4 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#5 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#6 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#7 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)
+#8 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\symfony\\console\\Command\\Command.php(326): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#10 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\symfony\\console\\Application.php(1106): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\symfony\\console\\Application.php(324): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\ServeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\symfony\\console\\Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 D:\\laragon\\laragon\\www\\sentimen-pipeline\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 D:\\laragon\\laragon\\www\\sentimen-pipeline\\artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
