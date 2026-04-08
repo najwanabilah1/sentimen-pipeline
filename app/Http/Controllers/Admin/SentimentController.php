@@ -4,61 +4,90 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Review;
-use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
-use App\Services\PreprocessService;
 
 class SentimentController extends Controller
 {
+    // =========================
+    // HALAMAN INDEX
+    // =========================
     public function index()
     {
         $reviews = Review::all();
         return view('admin.sentiment.index', compact('reviews'));
     }
 
+    // =========================
+    // PROSES ANALISIS
+    // =========================
     public function process()
     {
-        // 1. Ambil data yang ulasan_clean-nya ada tapi sentimen-nya masih kosong   
+        // 1. Ambil data
         $dataUlasan = Review::whereNotNull('isi_ulasan_clean')
                             ->whereNull('sentimen')
                             ->get();
 
         if ($dataUlasan->isEmpty()) {
-            return back()->with('info', 'Tidak ada data baru untuk dianalisis.');   
+            return back()->with('info', 'Tidak ada data baru untuk dianalisis.');
         }
 
-        // 2. Kirim data 'isi_ulasan_clean' ke Python
+        // 2. Ambil teks
         $listTeks = $dataUlasan->pluck('isi_ulasan_clean')->toArray();
-        $jsonTeks = json_encode($listTeks);
+        $jsonTeks = json_encode($listTeks, JSON_UNESCAPED_UNICODE);
 
-        // Run Python analyzer via Symfony Process (non-static)
-        $pythonCmd = PreprocessService::getPythonCommand();
+        // 3. PATH PYTHON (VENV)
+        $pythonPath = base_path('venv\\Scripts\\python.exe');
+        $scriptPath = base_path('python_services/analyzer.py');
 
-        $cmd = [
-            $pythonCmd,
-            base_path('python_services/analyzer.py'),
-            $jsonTeks,
-        ];
+        $process = new Process([
+            $pythonPath,
+            $scriptPath,
+            $jsonTeks
+        ]);
 
-        $process = new Process($cmd);
         $process->setTimeout(120);
+
+        // 🔥 ENV FIX FINAL (WAJIB)
+        $process->setEnv([
+            'SYSTEMROOT' => getenv('SYSTEMROOT'),
+            'WINDIR' => getenv('WINDIR'),
+            'PATH' => getenv('PATH') . ';' . base_path('venv\\Scripts'),
+            'PYTHONPATH' => base_path('venv\\Lib\\site-packages'),
+            'PYTHONHASHSEED' => '0',
+        ]);
+
         $process->run();
 
+        // =========================
+        // HANDLE ERROR
+        // =========================
         if (!$process->isSuccessful()) {
-            \Log::error('Python Process Error: ' . $process->getErrorOutput());
-            \Log::error('Python Command Line: ' . $process->getCommandLine());
-            // Optionally, return the error message directly to the front-end to see what happened
-            return back()->with('error', 'Gagal memanggil Python. Error: ' . $process->getErrorOutput());
+            \Log::error('Python Error: ' . $process->getErrorOutput());
+            return back()->with('error', 'Gagal memanggil Python: ' . $process->getErrorOutput());
         }
 
-        $hasilSentimen = json_decode($process->getOutput(), true);
+        // =========================
+        // AMBIL OUTPUT
+        // =========================
+        $output = json_decode($process->getOutput(), true);
 
-        // 3. Update kolom 'sentimen' dan 'waktu_analisis'
+        if (!isset($output['sentiment'])) {
+            \Log::error('Output tidak valid: ' . $process->getOutput());
+            return back()->with('error', 'Output Python tidak valid');
+        }
+
+        $hasilSentimen = $output['sentiment'];
+
+        // =========================
+        // UPDATE DATABASE
+        // =========================
         foreach ($dataUlasan as $index => $review) {
-            $review->update([
-                'sentimen' => $hasilSentimen[$index],
-                'waktu_analisis' => now() // Catat waktu kapan AI memprosesnya
-            ]);
+            if (isset($hasilSentimen[$index])) {
+                $review->update([
+                    'sentimen' => ucfirst(trim($hasilSentimen[$index])),
+                    'waktu_analisis' => now()
+                ]);
+            }
         }
 
         return back()->with('success', 'Analisis Sentimen Berhasil!');

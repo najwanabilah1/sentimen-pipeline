@@ -6,8 +6,8 @@
         <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center mb-4 text-xl">
             <i class="fa-solid fa-tv"></i>
         </div>
-        <p class="text-gray-500 text-sm font-medium">Total Program</p>
-        <h3 class="text-2xl font-bold">{{ $stats['total_program'] }}</h3>
+        <p class="text-gray-500 text-sm font-medium">Total Berita</p>
+        <h3 class="text-2xl font-bold">{{ $stats['total_berita'] }}</h3>
     </div>
     
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">

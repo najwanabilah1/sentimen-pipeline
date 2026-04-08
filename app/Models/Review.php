@@ -6,27 +6,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    // Gunakan tabel 'ulasan' (form publik menyimpan ke tabel ini)
     protected $table = 'ulasan';
 
+    protected $primaryKey = 'id_ulasan';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
+
+    public $timestamps = false;
+
     protected $fillable = [
-        'id_ulasan',
         'kategori_berita',
         'judul_berita',
         'rating',
         'nama_user',
-        'isi_ulasan_raw',   // Teks asli dari user
-        'isi_ulasan_clean', // Teks yang sudah dibersihkan teman kamu
+        'isi_ulasan_raw',
+        'isi_ulasan_clean',
         'status',
         'is_spam',
         'is_kasar',
         'skor_cosine',
         'waktu_kirim',
         'waktu_analisis',
-        'sentimen'          // Kolom yang akan diupdate oleh Python kamu
+        'sentimen'
     ];
 
-    // Karena kamu pakai waktu_kirim/analisis sendiri, 
-    // kita matikan timestamps default Laravel jika tidak dipakai
-    public $timestamps = false; 
+    // 🔥 FIX DI SINI
+    protected $casts = [
+        'waktu_analisis' => 'datetime',
+    ];
 }
