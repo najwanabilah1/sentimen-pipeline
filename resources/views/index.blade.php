@@ -3,88 +3,93 @@
 @section('content')
 
 <style>
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
     :root {
         --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --secondary: #ef4444;
-        --secondary-dark: #dc2626;
-        --accent: #4f46e5;
-        --bg-light: #f8fafc;
-        --text-main: #1e293b;
-        --text-muted: #64748b;
-        --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --primary-gradient: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+        --dark: #0f172a;
+        --slate-500: #64748b;
+        --slate-100: #f1f5f9;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
-        background-color: var(--bg-light);
-        color: var(--text-main);
-        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: var(--dark);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        line-height: 1.5;
+    }
+
+    /* Agar konten tidak mepet ke ujung tab/browser */
+    .main-wrapper {
+        padding: 0 4% 80px 4%; /* Memberi ruang di kiri dan kanan */
     }
 
     /* ===================== */
-    /* HERO SECTION */
+    /* HERO SECTION - REFINED */
     /* ===================== */
     .hero {
         position: relative;
-        min-height: 450px;
+        min-height: 400px; /* Ukuran lebih proporsional */
         background: url('{{ asset("assets/img/hero.jpg") }}') center/cover no-repeat;
         display: flex;
         align-items: center;
-        color: white;
-        margin-bottom: 2rem;
+        border-radius: 30px; /* Lebih subtle */
+        overflow: hidden;
+        margin: 20px 0 60px 0;
+        animation: fadeIn 0.8s ease-out;
     }
 
-    .hero::after {
+    .hero::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.4));
+        background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
         z-index: 1;
     }
 
     .hero-content {
         position: relative;
         z-index: 2;
-        max-width: 700px;
-        padding: 2rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    @media (min-width: 992px) {
-        .hero-content { margin-left: 5%; }
+        max-width: 650px;
+        padding: 3rem;
     }
 
     .hero h1 {
-        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-size: 2.5rem; /* Ukuran lebih kecil dan rapi */
         font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        color: white;
     }
 
     .hero p {
-        font-size: 1.1rem;
-        opacity: 0.9;
+        font-size: 1rem;
+        color: #cbd5e1;
         margin-bottom: 2rem;
-        line-height: 1.7;
+        font-weight: 400;
     }
 
     .btn-hero {
-        background: var(--secondary);
-        padding: 14px 28px;
-        color: white;
-        border-radius: 8px;
+        background: var(--primary-gradient);
+        padding: 12px 24px;
+        color: white !important;
+        border-radius: 10px;
         text-decoration: none;
         font-weight: 600;
-        transition: all 0.3s;
-        display: inline-block;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .btn-hero:hover {
-        background: var(--secondary-dark);
         transform: translateY(-2px);
-        color: white;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
     }
 
     /* ===================== */
@@ -93,335 +98,239 @@
     .section-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         margin-bottom: 2rem;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #e2e8f0;
     }
 
-    .section-header h2 {
-        font-size: 1.75rem;
+    .header-title h2 {
+        font-size: 1.5rem; /* Kecil tapi tegas */
         font-weight: 700;
-        margin-bottom: 0;
-        color: var(--text-main);
+        color: var(--dark);
+        margin-bottom: 0.2rem;
     }
 
-    .section-header a {
-        text-decoration: none;
-        font-size: 0.875rem;
+    .header-title .accent-line {
+        width: 40px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 10px;
+    }
+
+    .btn-view-all {
         color: var(--primary);
         font-weight: 600;
-        background: rgba(37, 99, 235, 0.1);
-        padding: 8px 16px;
-        border-radius: 99px;
-        transition: 0.3s;
-    }
-
-    .section-header a:hover {
-        background: var(--primary);
-        color: white;
-    }
-
-    .subtitle {
-        margin-top: -1.5rem;
-        margin-bottom: 2rem;
-        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: var(--transition);
     }
 
     /* ===================== */
-    /* BERITA GRID (RESPONSIVE) */
+    /* BERITA GRID */
     /* ===================== */
     .berita-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 24px;
+        gap: 25px;
         margin-bottom: 4rem;
     }
 
     .card-news {
         background: white;
-        border-radius: 16px;
+        border-radius: 20px;
         overflow: hidden;
-        border: none;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #edf2f7;
+        transition: var(--transition);
+        height: 100%;
         display: flex;
         flex-direction: column;
-        height: 100%;
     }
 
     .card-news:hover {
         transform: translateY(-8px);
-        box-shadow: var(--shadow);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
-    .card-news img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
+    .img-wrapper { height: 180px; overflow: hidden; }
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-    .card-news-body {
-        padding: 1.25rem;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
+    .card-news-body { padding: 1.25rem; }
 
     .badge-kategori {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
         background: #eff6ff;
         color: var(--primary);
         padding: 4px 10px;
         border-radius: 6px;
+        font-size: 0.7rem;
         font-weight: 700;
-        width: fit-content;
+        text-transform: uppercase;
         margin-bottom: 0.75rem;
+        display: inline-block;
     }
 
     .card-news h3 {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        line-height: 1.4;
         margin-bottom: 0.75rem;
-        color: var(--text-main);
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        line-height: 1.4;
     }
 
-    .text-date {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        margin-bottom: 1.5rem;
-    }
+    .text-date { font-size: 0.8rem; color: var(--slate-500); margin-bottom: 1.25rem; }
 
     .btn-detail {
-        margin-top: auto;
-        background: var(--primary);
-        color: white;
-        text-align: center;
         padding: 10px;
         border-radius: 8px;
+        background: #f8fafc;
+        color: var(--dark);
+        text-align: center;
         text-decoration: none;
         font-weight: 600;
-        transition: 0.2s;
+        font-size: 0.85rem;
+        display: block;
+        border: 1px solid #e2e8f0;
+        transition: var(--transition);
     }
 
-    .btn-detail:hover {
-        background: var(--primary-dark);
-        color: white;
-    }
+    .btn-detail:hover { background: var(--dark); color: white; }
 
     /* ===================== */
-    /* ULASAN HORIZONTAL SCROLL */
+    /* ULASAN SLIDER */
     /* ===================== */
     .ulasan-wrapper {
         display: flex;
         gap: 20px;
         overflow-x: auto;
-        padding: 10px 5px 30px;
-        scrollbar-width: thin;
+        padding-bottom: 20px;
+        scrollbar-width: none;
     }
-
-    .ulasan-wrapper::-webkit-scrollbar { height: 6px; }
-    .ulasan-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .ulasan-wrapper::-webkit-scrollbar { display: none; }
 
     .ulasan-card {
         flex: 0 0 320px;
         background: white;
         padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid #f1f5f9;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        border-radius: 20px;
+        border: 1px solid #edf2f7;
+        transition: var(--transition);
     }
 
-    .ulasan-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
+    .stars { color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.75rem; }
+    .ulasan-text { font-size: 0.9rem; color: #475569; font-style: italic; margin-bottom: 1.5rem; }
 
-    .badge-news-ref {
-        background: var(--accent);
+    .user-profile { display: flex; align-items: center; gap: 12px; }
+    .avatar-placeholder {
+        width: 35px; height: 35px;
+        background: var(--primary-gradient);
         color: white;
-        font-size: 10px;
-        padding: 2px 8px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        text-decoration: none;
-    }
-
-    .news-mini-info {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        padding: 8px;
-        background: #f8fafc;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-    }
-
-    .news-mini-info img {
-        width: 45px; height: 45px;
-        border-radius: 6px; object-fit: cover;
-    }
-
-    .news-mini-title {
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .stars { color: #fbbf24; margin-bottom: 0.75rem; }
-
-    .ulasan-text {
-        font-size: 0.95rem;
-        font-style: italic;
-        color: #475569;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-    }
-
-    .user-footer {
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .user-footer::before {
-        content: "";
-        width: 24px; height: 2px; background: var(--secondary);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; font-weight: 700;
     }
 
     /* ===================== */
-    /* CTA SECTION */
+    /* CTA BANNER */
     /* ===================== */
     .cta-banner {
-        background: linear-gradient(135deg, var(--accent), var(--secondary));
-        padding: 80px 20px;
-        border-radius: 24px;
+        background: var(--dark);
+        padding: 60px 30px;
+        border-radius: 30px;
         text-align: center;
         color: white;
-        margin: 4rem 0;
+        margin-top: 4rem;
     }
 
-    .cta-banner h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
-    .cta-banner p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
-    
-    .btn-cta {
-        background: white;
-        color: var(--text-main);
-        padding: 14px 32px;
-        border-radius: 99px;
-        font-weight: 700;
-        text-decoration: none;
-        transition: 0.3s;
+    .cta-banner h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
+    .cta-banner p { font-size: 0.95rem; color: #94a3b8; margin-bottom: 2rem; }
+
+    /* Simple Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .btn-cta:hover {
-        background: #f1f5f9;
-        transform: scale(1.05);
-        color: var(--primary);
+    @media (max-width: 768px) {
+        .main-wrapper { padding: 0 15px 50px 15px; }
+        .hero { min-height: 350px; border-radius: 20px; }
+        .hero-content { padding: 2rem; }
+        .hero h1 { font-size: 2rem; }
     }
 </style>
 
-<div class="hero">
-    <div class="container-fluid">
+<div class="main-wrapper">
+    <div class="hero">
         <div class="hero-content">
-            <h1>Sistem Review Program RBTV</h1>
-            <p>Platform ulasan terpercaya untuk program berita RBTV. Suara Anda adalah inspirasi kami untuk menyajikan informasi yang lebih akurat dan tajam.</p>
-            <a href="{{ url('ulasan') }}" class="btn-hero">Beri Ulasan Sekarang</a>
+            <h1>Inspirasi Dalam <br> Setiap Berita.</h1>
+            <p>Platform interaktif untuk meninjau dan memberikan masukan terhadap program-program RBTV.</p>
+            <a href="{{ url('ulasan') }}" class="btn-hero">
+                Beri Ulasan Sekarang <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
     </div>
-</div>
 
-<div class="container">
+    <div class="container-fluid p-0">
+        <div class="section-header">
+            <div class="header-title">
+                <h2>Berita Terkini</h2>
+                <div class="accent-line"></div>
+            </div>
+            <a href="{{ url('program') }}" class="btn-view-all">Lihat Semua</a>
+        </div>
 
-    <div class="section-header">
-        <h2>Berita Terkini</h2>
-        <a href="{{ url('program') }}">Lihat Semua</a>
-    </div>
-    <p class="subtitle">Update informasi terbaru dari redaksi RBTV</p>
+        <div class="berita-grid">
+            @foreach($berita as $row)
+            <div class="card-news">
+                <div class="img-wrapper">
+                    <img src="{{ asset('images/'.$row->gambar_berita) }}" alt="{{ $row->judul_berita }}">
+                </div>
+                <div class="card-news-body">
+                    <span class="badge-kategori">{{ $row->kategori_berita }}</span>
+                    <h3>{{ $row->judul_berita }}</h3>
+                    <div class="text-date">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        {{ \Carbon\Carbon::parse($row->tanggal_berita)->translatedFormat('d M Y') }}
+                    </div>
+                    <a href="{{ url('detail/'.$row->id_berita) }}" class="btn-detail">Detail Berita</a>
+                </div>
+            </div>
+            @endforeach
+        </div>
 
-    <div class="berita-grid">
-        @foreach($berita as $row)
-        <div class="card-news">
-            <img src="{{ asset('images/'.$row->gambar_berita) }}" alt="{{ $row->judul_berita }}">
-            <div class="card-news-body">
-                <span class="badge-kategori">{{ $row->kategori_berita }}</span>
-                <h3>{{ $row->judul_berita }}</h3>
-                <p class="text-date">
-                    <i class="far fa-calendar-alt me-1"></i>
-                    {{ \Carbon\Carbon::parse($row->tanggal_berita)->translatedFormat('d F Y') }}
-                </p>
-                <a href="{{ url('detail/'.$row->id_berita) }}" class="btn-detail">Baca Detail</a>
+        <div class="section-header">
+            <div class="header-title">
+                <h2>Ulasan Penonton</h2>
+                <div class="accent-line"></div>
             </div>
         </div>
-        @endforeach
-    </div>
 
-    <div class="section-header">
-        <h2>Ulasan Pengguna</h2>
-        <a href="{{ url('ulasan') }}">Semua Ulasan</a>
-    </div>
-    <p class="subtitle">Feedback nyata dari penonton setia kami</p>
-
-    <div class="ulasan-wrapper">
-        @foreach($ulasan as $row)
-        <div class="ulasan-card">
-            <div class="top-content">
-                <div class="ulasan-header">
-                    <span class="badge-kategori m-0">{{ $row->kategori_berita }}</span>
-                    <a href="{{ url('detail?judul='.urlencode($row->judul_berita).'&kategori='.$row->kategori_berita) }}" class="badge-news-ref">Program</a>
-                </div>
-
-                <div class="news-mini-info">
-                    <img src="{{ asset('images/'.($row->gambar_berita ?? 'default.jpg')) }}">
-                    <div class="news-mini-title">{{ $row->judul_berita }}</div>
-                </div>
-
+        <div class="ulasan-wrapper">
+            @foreach($ulasan as $row)
+            <div class="ulasan-card">
                 <div class="stars">
                     @for($i=1; $i<=5; $i++)
                         <i class="{{ $i <= $row->rating ? 'fas' : 'far' }} fa-star"></i>
                     @endfor
                 </div>
-
-                <p class="ulasan-text">"{{ $row->isi_ulasan_raw }}"</p>
+                <p class="ulasan-text">"{{ Str::limit($row->isi_ulasan_raw, 100) }}"</p>
+                <div class="user-profile">
+                    <div class="avatar-placeholder">
+                        {{ strtoupper(substr($row->nama_user, 0, 1)) }}
+                    </div>
+                    <div>
+                        <div class="fw-bold" style="font-size: 0.9rem;">{{ $row->nama_user }}</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">{{ $row->judul_berita }}</div>
+                    </div>
+                </div>
             </div>
-
-            <div class="user-footer">
-                {{ $row->nama_user }}
-            </div>
+            @endforeach
         </div>
-        @endforeach
-    </div>
 
-    <div class="cta-banner">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <h2>Mari Berkontribusi!</h2>
-                <p>Ulasan Anda sangat berarti untuk kualitas jurnalisme kami. Bantu kami menjadi lebih baik hari ini.</p>
-                <a href="{{ url('ulasan') }}" class="btn-cta shadow">Mulai Beri Ulasan</a>
-            </div>
+        <div class="cta-banner">
+            <h2>Suara Anda, Perubahan Kami.</h2>
+            <p>Bantu kami menyajikan berita yang lebih berkualitas melalui ulasan Anda.</p>
+            <a href="{{ url('ulasan') }}" class="btn-hero" style="background: white; color: var(--dark) !important;">
+                Mulai Tulis Ulasan
+            </a>
         </div>
     </div>
-
 </div>
 
 @endsection
