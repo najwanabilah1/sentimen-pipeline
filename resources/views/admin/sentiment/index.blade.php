@@ -2,287 +2,201 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
-    /* ----- COLOR PALETTE & TYPOGRAPHY ----- */
-    :root {
-        --bg-body: #F4F7FE;
-        --dark-text: #1B254B;
-        --gray-text: #A3AED0;
-        --border-color: #E0E5F2;
-        --primary-red: #E63946;
-        --white: #FFFFFF;
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
     }
+    .animate-fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+    
+    /* Custom Scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    body { 
-        font-family: 'Plus Jakarta Sans', sans-serif; 
-        background-color: var(--bg-body); 
-        color: var(--dark-text);
-    }
-
-    /* ----- PREMIUM CARD STYLING ----- */
-    .card-modern { 
-        background: var(--white); 
-        border: none;
-        border-radius: 20px; 
-        box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
-        padding: 24px;
-        height: 100%;
-        transition: all 0.3s ease;
-    }
-
-    /* ----- BUTTONS ----- */
-    .btn-ai-magic { 
-        background: linear-gradient(135deg, #111C44 0%, #0B1437 100%);
-        color: white; 
-        border: none; 
-        padding: 12px 28px;
-        border-radius: 14px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .btn-ai-magic:hover { 
-        transform: translateY(-3px); 
-        box-shadow: 0 10px 20px rgba(17, 28, 68, 0.2);
-        color: white;
-    }
-
-    /* ----- INPUT & FILTER FORM ----- */
-    .form-control-modern, .form-select-modern {
-        background-color: #F4F7FE;
-        border: 1px solid transparent;
-        border-radius: 12px;
-        padding: 12px 16px;
-        font-weight: 500;
-        font-size: 0.9rem;
-        color: var(--dark-text);
-        transition: all 0.2s ease;
-    }
-    .form-control-modern:focus, .form-select-modern:focus {
-        background-color: var(--white);
-        border-color: var(--primary-red);
-        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
-        outline: none;
-    }
-    .search-icon-wrapper {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--gray-text);
-        z-index: 4;
-    }
-    .search-input-modern {
-        padding-left: 44px !important;
-    }
-
-    /* ----- TABLE STYLING ----- */
-    .table-modern { border-collapse: separate; border-spacing: 0; width: 100%; }
-    .table-modern thead th {
-        background-color: transparent;
-        color: var(--gray-text);
-        font-weight: 700;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 16px;
-        border-bottom: 2px solid var(--border-color);
-    }
-    .table-modern tbody td {
-        padding: 20px 16px;
-        vertical-align: middle;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--dark-text);
-    }
-    .table-modern tbody tr:last-child td { border-bottom: none; }
-    .table-modern tbody tr:hover { background-color: #F8FAFC; }
-
-    /* ----- BADGES ----- */
-    .badge-sentiment {
-        padding: 8px 16px;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 0.75rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        letter-spacing: 0.3px;
-    }
-    .badge-pos { background: #E2FFED; color: #05CD99; }
-    .badge-neg { background: #FFEDEC; color: #EE5D50; }
-    .badge-neu { background: #F4F7FE; color: #8F9BBA; }
-    .badge-pending { background: #FFF4E5; color: #FF9800; }
-
-    /* ----- MOBILE RESPONSIVE ----- */
-    @media (max-width: 991px) {
-        .mobile-stack { flex-direction: column; align-items: stretch !important; gap: 15px; }
-        .btn-ai-magic { justify-content: center; width: 100%; }
-        
-        .responsive-table thead { display: none; }
-        .responsive-table tr { 
-            display: block; margin-bottom: 16px; border: 1px solid var(--border-color); 
-            border-radius: 16px; padding: 16px; background: white; 
-        }
-        .responsive-table td { 
-            display: flex; justify-content: space-between; align-items: center; 
-            border: none; padding: 8px 0; font-size: 0.9rem; text-align: right;
-        }
-        .responsive-table td::before { 
-            content: attr(data-label); font-weight: 700; color: var(--gray-text); font-size: 0.8rem; text-align: left;
-        }
-        .responsive-table td > div, .responsive-table td > span, .responsive-table td > p {
-            text-align: right; justify-content: flex-end;
-        }
-    }
-
-    /* Fix Chart Container so it doesn't stretch weirdly */
-    .chart-container {
-        position: relative;
-        height: 320px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    /* Shadow Glass Effect */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 </style>
 
-<div class="container-fluid py-4 px-md-4">
-    <div class="d-flex justify-content-between align-items-center mb-5 mobile-stack">
+<div class="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto space-y-8">
+    
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 animate-fade-in">
         <div>
-            <h1 class="h2 fw-800 mb-1" style="color: var(--dark-text); letter-spacing: -0.5px;">Analisis Sentimen AI</h1>
-            <p class="mb-0 fw-500" style="color: var(--gray-text);">Monitor persepsi publik terhadap berita secara real-time.</p>
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Analisis Sentimen AI</h1>
+            <p class="text-slate-500 mt-1 flex items-center gap-2">
+                <span class="flex h-2 w-2 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+                Monitoring persepsi publik secara real-time melalui engine RBTV-AI
+            </p>
         </div>
+        
         <form action="{{ route('admin.sentiment.process') }}" method="POST">
             @csrf
-            <button type="submit" class="btn-ai-magic">
-                <i class="bi bi-magic"></i> Jalankan Engine AI
+            <button type="submit" class="group relative bg-slate-900 hover:bg-slate-800 text-white px-8 py-3.5 rounded-2xl flex items-center gap-3 shadow-2xl shadow-slate-200 transition-all hover:-translate-y-1 active:scale-95">
+                <i class="fa-solid fa-wand-sparkles text-amber-400 group-hover:rotate-12 transition-transform"></i>
+                <span class="font-bold">Jalankan Engine AI</span>
             </button>
         </form>
     </div>
 
-    <div class="row g-4 mb-5">
-        <div class="col-xl-5 col-lg-6">
-            <div class="card-modern">
-                <h5 class="fw-800 mb-1">Distribusi Sentimen</h5>
-                <p class="small mb-4" style="color: var(--gray-text);">Visualisasi persentase ulasan user</p>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-5 animate-fade-in" style="animation-delay: 100ms">
+            <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm h-full">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Distribusi Sentimen</h3>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Visualisasi Parameter</p>
+                    </div>
+                    <div class="bg-slate-50 p-2 rounded-xl text-slate-400">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
                 
-                <div class="chart-container">
+                <div class="relative h-[300px] w-full flex items-center justify-center">
                     <canvas id="sentimentRadarChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <div class="col-xl-7 col-lg-6">
-            <div class="card-modern">
-                <h5 class="fw-800 mb-1">Pencarian Cerdas</h5>
-                <p class="small mb-4" style="color: var(--gray-text);">Filter data ulasan yang ingin Anda analisis</p>
-                
-                <form action="{{ route('admin.sentiment.index') }}" method="GET" class="row g-3">
-                    <div class="col-12 position-relative">
-                        <label class="small fw-700 mb-2" style="color: var(--dark-text);">Kata Kunci</label>
-                        <i class="bi bi-search search-icon-wrapper"></i>
-                        <input type="text" name="search" class="form-control form-control-modern search-input-modern" placeholder="Cari ulasan, nama user, atau judul berita..." value="{{ request('search') }}">
+        <div class="lg:col-span-7 animate-fade-in" style="animation-delay: 200ms">
+            <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm h-full">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Pencarian Cerdas</h3>
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Filter Data Ulasan</p>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <label class="small fw-700 mb-2" style="color: var(--dark-text);">Kategori Berita</label>
-                        <select name="category" class="form-select form-select-modern">
-                            <option value="">Semua Kategori</option>
-                            <option value="Politik" {{ request('category') == 'Politik' ? 'selected' : '' }}>Politik</option>
-                            <option value="Ekonomi" {{ request('category') == 'Ekonomi' ? 'selected' : '' }}>Ekonomi</option>
-                            <option value="Sosial" {{ request('category') == 'Sosial' ? 'selected' : '' }}>Sosial</option>
-                        </select>
+                </div>
+
+                <form action="{{ route('admin.sentiment.index') }}" method="GET" class="space-y-5">
+                    <div class="relative group">
+                        <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">Kata Kunci</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-red-500 transition-colors"></i>
+                            <input type="text" name="search" placeholder="Cari ulasan, user, atau judul..." value="{{ request('search') }}"
+                                class="w-full pl-12 pr-6 py-4 bg-slate-50 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-2xl transition-all outline-none font-semibold text-sm">
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="small fw-700 mb-2" style="color: var(--dark-text);">Hasil Sentimen</label>
-                        <select name="sentiment" class="form-select form-select-modern">
-                            <option value="">Semua Sentimen</option>
-                            <option value="Positif" {{ request('sentiment') == 'Positif' ? 'selected' : '' }}>Positif</option>
-                            <option value="Negatif" {{ request('sentiment') == 'Negatif' ? 'selected' : '' }}>Negatif</option>
-                            <option value="Netral" {{ request('sentiment') == 'Netral' ? 'selected' : '' }}>Netral</option>
-                        </select>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1 block">Kategori Berita</label>
+                            <select name="category" class="w-full px-5 py-4 bg-slate-50 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-2xl transition-all outline-none font-semibold text-sm appearance-none">
+                                <option value="">Semua Kategori</option>
+                                <option value="Politik" {{ request('category') == 'Politik' ? 'selected' : '' }}>Politik</option>
+                                <option value="Ekonomi" {{ request('category') == 'Ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+                                <option value="Sosial" {{ request('category') == 'Sosial' ? 'selected' : '' }}>Sosial</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1 block">Hasil Sentimen</label>
+                            <select name="sentiment" class="w-full px-5 py-4 bg-slate-50 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-2xl transition-all outline-none font-semibold text-sm appearance-none">
+                                <option value="">Semua Sentimen</option>
+                                <option value="Positif" {{ request('sentiment') == 'Positif' ? 'selected' : '' }}>Positif</option>
+                                <option value="Negatif" {{ request('sentiment') == 'Negatif' ? 'selected' : '' }}>Negatif</option>
+                                <option value="Netral" {{ request('sentiment') == 'Netral' ? 'selected' : '' }}>Netral</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <div class="col-12 mt-4 d-flex gap-3 justify-content-end mobile-stack">
-                        <a href="{{ route('admin.sentiment.index') }}" class="btn btn-light fw-700 px-4 py-2" style="border-radius: 12px; color: var(--gray-text);">Reset</a>
-                        <button type="submit" class="btn fw-700 px-4 py-2" style="background-color: var(--primary-red); color: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(230, 57, 70, 0.2);">
-                            Terapkan Filter
-                        </button>
+
+                    <div class="flex items-center gap-4 pt-2">
+                        <a href="{{ route('admin.sentiment.index') }}" class="flex-1 text-center py-4 rounded-2xl font-bold text-slate-400 hover:bg-slate-50 transition-colors">Reset</a>
+                        <button type="submit" class="flex-[2] bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-100 transition-all active:scale-95">Terapkan Filter</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="card-modern p-0 overflow-hidden">
-        <div class="p-4 border-bottom border-light">
-            <h5 class="fw-800 mb-0">Log Analisis Terbaru</h5>
+    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-fade-in" style="animation-delay: 300ms">
+        <div class="p-8 border-b border-slate-50 flex justify-between items-center">
+            <h3 class="text-xl font-extrabold text-slate-900">Log Analisis Terbaru</h3>
+            <span class="px-4 py-1.5 bg-slate-100 text-slate-500 rounded-full text-[10px] font-bold uppercase">Total: {{ $reviews->count() }} Data</span>
         </div>
-        <div class="table-responsive">
-            <table class="table-modern responsive-table">
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
                 <thead>
-                    <tr>
-                        <th class="ps-4">Detail Berita</th>
-                        <th>User</th>
-                        <th class="text-center">Rating</th>
-                        <th style="width: 35%;">Konteks Ulasan</th>
-                        <th class="text-center">AI Result</th>
-                        <th class="pe-4 text-end">Waktu</th>
+                    <tr class="bg-slate-50/50">
+                        <th class="px-8 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">Detail Berita</th>
+                        <th class="px-6 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">User & Rating</th>
+                        <th class="px-6 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">Konteks Ulasan</th>
+                        <th class="px-6 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] text-center">AI Result</th>
+                        <th class="px-8 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em] text-right">Waktu</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-50">
                     @forelse($reviews as $review)
-                    <tr>
-                        <td class="ps-4" data-label="Berita">
-                            <div class="fw-800 mb-1" style="color: var(--dark-text);">{{ Str::limit($review->judul_berita, 40) }}</div>
-                            <span class="badge" style="background: var(--bg-body); color: var(--gray-text); font-weight: 600;">{{ $review->kategori_berita }}</span>
-                        </td>
-                        <td data-label="User">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-800" style="width: 36px; height: 36px; background: #F4F7FE; color: var(--primary-red);">
-                                    {{ strtoupper(substr($review->nama_user, 0, 1)) }}
-                                </div>
-                                <span class="fw-700">{{ $review->nama_user }}</span>
+                    <tr class="hover:bg-slate-50/50 transition-colors group">
+                        <td class="px-8 py-6">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-sm font-bold text-slate-800 group-hover:text-red-600 transition-colors">{{ Str::limit($review->judul_berita, 35) }}</span>
+                                <span class="inline-flex w-fit px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[9px] font-bold uppercase">{{ $review->kategori_berita }}</span>
                             </div>
                         </td>
-                        <td class="text-center" data-label="Rating">
-                            <span class="fw-800" style="color: #FFB547; font-size: 1.1rem;">
-                                ★ {{ $review->rating ?? '-' }}
-                            </span>
+                        <td class="px-6 py-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                                    {{ strtoupper(substr($review->nama_user, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-700">{{ $review->nama_user }}</p>
+                                    <div class="flex text-amber-400 text-[10px] mt-0.5">
+                                        @for($i=1; $i<=5; $i++)
+                                            <i class="fa-{{ $i <= ($review->rating ?? 0) ? 'solid' : 'regular' }} fa-star"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
                         </td>
-                        <td data-label="Ulasan">
-                            <p class="mb-0 fw-500" style="color: var(--gray-text); font-size: 0.9rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        <td class="px-6 py-6 max-w-xs">
+                            <p class="text-xs font-medium text-slate-500 leading-relaxed italic line-clamp-2">
                                 "{{ $review->isi_ulasan_clean ?? $review->isi_ulasan_raw }}"
                             </p>
                         </td>
-                        <td class="text-center" data-label="Sentimen">
-                            @if($review->sentimen == 'Positif')
-                                <span class="badge-sentiment badge-pos"><i class="bi bi-check-circle-fill"></i> POSITIF</span>
-                            @elseif($review->sentimen == 'Negatif')
-                                <span class="badge-sentiment badge-neg"><i class="bi bi-exclamation-triangle-fill"></i> NEGATIF</span>
-                            @elseif($review->sentimen == 'Netral')
-                                <span class="badge-sentiment badge-neu"><i class="bi bi-dash-circle-fill"></i> NETRAL</span>
-                            @else
-                                <span class="badge-sentiment badge-pending"><i class="bi bi-hourglass-split"></i> MENUNGGU AI</span>
-                            @endif
+                        <td class="px-6 py-6">
+                            <div class="flex justify-center">
+                                @if($review->sentimen == 'Positif')
+                                    <span class="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-xl text-[10px] font-extrabold flex items-center gap-2 border border-emerald-100">
+                                        <i class="fa-solid fa-face-smile"></i> POSITIF
+                                    </span>
+                                @elseif($review->sentimen == 'Negatif')
+                                    <span class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-xl text-[10px] font-extrabold flex items-center gap-2 border border-rose-100">
+                                        <i class="fa-solid fa-face-frown"></i> NEGATIF
+                                    </span>
+                                @elseif($review->sentimen == 'Netral')
+                                    <span class="px-3 py-1.5 bg-slate-100 text-slate-500 rounded-xl text-[10px] font-extrabold flex items-center gap-2 border border-slate-200">
+                                        <i class="fa-solid fa-face-meh"></i> NETRAL
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1.5 bg-amber-50 text-amber-600 rounded-xl text-[10px] font-extrabold flex items-center gap-2 animate-pulse border border-amber-100">
+                                        <i class="fa-solid fa-spinner fa-spin"></i> PROCESSING
+                                    </span>
+                                @endif
+                            </div>
                         </td>
-                        <td class="pe-4 text-end fw-600 small" style="color: var(--gray-text);" data-label="Waktu">
-                            {{ $review->waktu_analisis ? $review->waktu_analisis->diffForHumans() : '-' }}
+                        <td class="px-8 py-6 text-right">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">
+                                {{ $review->waktu_analisis ? $review->waktu_analisis->diffForHumans() : '-' }}
+                            </span>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5">
-                            <div class="py-4">
-                                <i class="bi bi-folder2-open mb-3" style="font-size: 3rem; color: var(--border-color);"></i>
-                                <h6 class="fw-700" style="color: var(--gray-text);">Belum ada data ulasan yang ditemukan.</h6>
+                        <td colspan="5" class="py-20 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-4">
+                                    <i class="fa-solid fa-database text-2xl"></i>
+                                </div>
+                                <h4 class="font-bold text-slate-800">Tidak Ada Data</h4>
+                                <p class="text-xs text-slate-400 mt-1">Gunakan filter lain atau jalankan engine AI.</p>
                             </div>
                         </td>
                     </tr>
@@ -294,14 +208,19 @@
 </div>
 
 <script>
-    // Kunci agar Radar Chart tidak membesar sendirian / gepeng
     const ctx = document.getElementById('sentimentRadarChart').getContext('2d');
+    
+    // Gradient background for the chart area
+    const chartGradient = ctx.createLinearGradient(0, 0, 0, 400);
+    chartGradient.addColorStop(0, 'rgba(230, 57, 70, 0.2)');
+    chartGradient.addColorStop(1, 'rgba(230, 57, 70, 0)');
+
     new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Positif', 'Negatif', 'Netral', 'Bintang 4-5', 'Bintang 1-2'],
+            labels: ['Positif', 'Negatif', 'Netral', 'Rating High', 'Rating Low'],
             datasets: [{
-                label: 'Data Analisis',
+                label: 'Volume Data',
                 data: [
                     {{ $reviews->where('sentimen', 'Positif')->count() }},
                     {{ $reviews->where('sentimen', 'Negatif')->count() }},
@@ -310,37 +229,45 @@
                     {{ $reviews->where('rating', '<=', 2)->count() }}
                 ],
                 fill: true,
-                backgroundColor: 'rgba(230, 57, 70, 0.1)',
+                backgroundColor: chartGradient,
                 borderColor: '#E63946',
-                borderWidth: 2,
-                pointBackgroundColor: '#111C44',
-                pointBorderColor: '#fff',
+                borderWidth: 3,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#E63946',
+                pointBorderWidth: 2,
                 pointRadius: 4,
-                pointHoverRadius: 6
+                pointHoverRadius: 6,
+                tension: 0.1
             }]
         },
         options: {
-            maintainAspectRatio: false, /* INI SANGAT PENTING AGAR TIDAK GEPENG */
+            maintainAspectRatio: false,
             responsive: true,
             scales: {
                 r: {
-                    grid: { color: '#E0E5F2' },
-                    angleLines: { color: '#E0E5F2' },
+                    grid: { color: '#f1f5f9' },
+                    angleLines: { color: '#f1f5f9' },
+                    suggestedMin: 0,
                     pointLabels: {
-                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' },
-                        color: '#A3AED0'
+                        font: { 
+                            family: "'Plus Jakarta Sans', sans-serif", 
+                            size: 10, 
+                            weight: '800' 
+                        },
+                        color: '#94a3b8',
+                        padding: 15
                     },
-                    ticks: { display: false, min: 0 }
+                    ticks: { display: false }
                 }
             },
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#111C44',
-                    titleFont: { family: "'Plus Jakarta Sans', sans-serif", size: 13 },
-                    bodyFont: { family: "'Plus Jakarta Sans', sans-serif", size: 12 },
+                    backgroundColor: '#1e293b',
                     padding: 12,
-                    cornerRadius: 8
+                    cornerRadius: 12,
+                    titleFont: { size: 12, weight: 'bold' },
+                    bodyFont: { size: 12 }
                 }
             }
         }
