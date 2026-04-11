@@ -3,179 +3,658 @@
 @section('content')
 
 <style>
-    /* CUSTOM CSS INTEGRATION */
-    .ulasan-page {
-        padding: 40px 15px;
+
+    :root {
+        --blue:        #1d4ed8;
+        --blue-dark:   #1e3a8a;
+        --blue-mid:    #2563eb;
+        --blue-light:  #dbeafe;
+        --blue-xlight: #eff6ff;
+        --red:         #dc2626;
+        --red-dark:    #b91c1c;
+        --white:       #ffffff;
+        --off-white:   #f8fafc;
+        --gray:        #e2e8f0;
+        --text-main:   #0f172a;
+        --text-muted:  #64748b;
+        --shadow-sm:   0 2px 8px rgba(30, 58, 138, 0.08);
+        --shadow-md:   0 6px 24px rgba(30, 58, 138, 0.12);
+        --shadow-lg:   0 16px 48px rgba(30, 58, 138, 0.18);
+        --radius:      14px;
+        --radius-sm:   8px;
+        --page-px:     48px;
     }
 
-    /* HERO */
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--off-white);
+        color: var(--text-main);
+    }
+
+    /* ===================== */
+    /* HERO                  */
+    /* ===================== */
     .ulasan-hero {
-        background: linear-gradient(90deg, #2563eb, #1e3a8a);
-        color: white;
-        padding: 50px 20px;
-        border-radius: 15px;
+        background: linear-gradient(110deg,
+            rgba(30, 58, 138, 0.97) 0%,
+            rgba(37, 99, 235, 0.88) 55%,
+            rgba(29, 78, 216, 0.75) 100%);
+        color: var(--white);
+        padding: 64px var(--page-px);
         text-align: center;
-        margin-bottom: 40px;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        position: relative;
+        overflow: hidden;
     }
 
-    /* FORM WRAPPER */
-    .form-wrapper {
-        background: white;
-        padding: 40px;
-        border-radius: 16px;
-        max-width: 1000px;
-        margin: auto;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    .ulasan-hero::before {
+        content: "";
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 220px; height: 220px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        pointer-events: none;
     }
 
-    /* INPUT CUSTOMIZATION */
-    label {
+    .ulasan-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -80px; left: -40px;
+        width: 280px; height: 280px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.04);
+        pointer-events: none;
+    }
+
+    .ulasan-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .ulasan-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: var(--white);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        padding: 6px 16px;
+        border-radius: 99px;
+        margin-bottom: 1.25rem;
+    }
+
+    .ulasan-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+    }
+
+    .ulasan-hero p {
+        font-size: 1rem;
+        opacity: 0.88;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+    /* ===================== */
+    /* MAIN WRAPPER          */
+    /* ===================== */
+    .ulasan-page {
+        padding: 48px var(--page-px) 64px;
+    }
+
+    /* ===================== */
+    /* ALERT NOTIF           */
+    /* ===================== */
+    .alert-notif {
+        background: #16a34a;
+        color: var(--white);
+        padding: 14px 20px;
+        border-radius: var(--radius-sm);
+        margin-bottom: 28px;
+        text-align: center;
+        font-size: 0.875rem;
         font-weight: 600;
-        color: #374151;
-        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        max-width: 860px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .form-control, .form-select {
-        border-radius: 8px;
-        padding: 12px;
-        border: 1px solid #dee2e6;
+    /* ===================== */
+    /* FORM WRAPPER          */
+    /* ===================== */
+    .form-wrapper {
+        background: var(--white);
+        padding: 36px 40px;
+        border-radius: var(--radius);
+        max-width: 860px;
+        margin: 0 auto 56px;
+        border: 1px solid var(--gray);
+        box-shadow: var(--shadow-md);
     }
 
-    /* CUSTOM SELECT ARROW */
-    .custom-select-wrapper select {
+    .form-wrapper h3 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--text-main);
+        margin: 0 0 28px;
+        text-align: center;
+        letter-spacing: -0.01em;
+    }
+
+    /* ===================== */
+    /* FORM GRID             */
+    /* ===================== */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+    }
+
+    .form-left {
+        padding-right: 32px;
+        border-right: 1px solid var(--gray);
+    }
+
+    .form-right {
+        padding-left: 32px;
+    }
+
+    /* ===================== */
+    /* FORM ELEMENTS         */
+    /* ===================== */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .form-group label .required {
+        color: var(--red);
+        margin-left: 2px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--gray);
+        font-size: 0.875rem;
+        font-family: inherit;
+        color: var(--text-main);
+        background: var(--off-white);
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: var(--blue-mid);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        background: var(--white);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: var(--text-muted);
+    }
+
+    .form-group select {
         appearance: none;
         -webkit-appearance: none;
-        background-image: url("data:image/svg+xml;utf8,<svg fill='%23666' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5'/></svg>");
+        cursor: pointer;
+        padding-right: 36px;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='none' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
         background-repeat: no-repeat;
-        background-position: right 12px center;
+        background-position: right 10px center;
         background-size: 16px;
+        background-color: var(--off-white);
     }
 
-    /* RATING STARS */
+    .form-group select:hover {
+        border-color: var(--blue-mid);
+    }
+
+    .form-group textarea {
+        height: 120px;
+        resize: vertical;
+        line-height: 1.65;
+    }
+
+    /* ===================== */
+    /* SEARCH INPUT ICON     */
+    /* ===================== */
+    .input-icon-wrap {
+        position: relative;
+    }
+
+    .input-icon-wrap i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        pointer-events: none;
+    }
+
+    .input-icon-wrap input {
+        padding-left: 34px;
+    }
+
+    /* ===================== */
+    /* RATING STARS          */
+    /* ===================== */
     .rating-stars {
-        font-size: 28px;
+        display: flex;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .star {
+        font-size: 1.75rem;
         cursor: pointer;
         color: #d1d5db;
-        transition: 0.2s;
+        transition: color 0.15s, transform 0.15s;
+        line-height: 1;
+        user-select: none;
     }
 
+    .star:hover,
     .star.active {
-        color: #fbbf24;
+        color: #f59e0b;
+        transform: scale(1.15);
     }
 
-    /* ANONIM CHECKBOX */
+    /* ===================== */
+    /* ANONIM BOX            */
+    /* ===================== */
     .anonim-box {
-        background: #f9fafb;
-        padding: 15px;
-        border-radius: 10px;
         display: flex;
         align-items: center;
         gap: 10px;
+        background: var(--off-white);
+        border: 1px solid var(--gray);
+        border-radius: var(--radius-sm);
+        padding: 12px 14px;
+        margin-top: 4px;
+        cursor: pointer;
+        transition: border-color 0.2s;
     }
 
-    /* HORIZONTAL SCROLL FOR CARDS */
-    .ulasan-container {
+    .anonim-box:hover {
+        border-color: var(--blue-mid);
+    }
+
+    .anonim-box input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--blue-mid);
+        cursor: pointer;
+        flex-shrink: 0;
+        margin: 0;
+    }
+
+    .anonim-box label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        margin: 0;
+        text-transform: none;
+        letter-spacing: 0;
+    }
+
+    /* ===================== */
+    /* SUBMIT BUTTON         */
+    /* ===================== */
+    .form-submit {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--gray);
+        text-align: center;
+    }
+
+    .btn-submit {
+        background: var(--blue-mid);
+        color: var(--white);
+        padding: 13px 40px;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-submit:hover {
+        background: var(--blue-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    /* ===================== */
+    /* SECTION HEADER        */
+    /* ===================== */
+    .section-header {
         display: flex;
-        gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .section-header h2 {
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin: 0;
+        color: var(--text-main);
+        letter-spacing: -0.02em;
+        position: relative;
+        padding-left: 15px;
+    }
+
+    .section-header h2::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 72%;
+        background: var(--blue-mid);
+        border-radius: 4px;
+    }
+
+    .section-subtitle {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    /* ===================== */
+    /* ULASAN CARDS          */
+    /* ===================== */
+    .ulasan-wrapper {
+        display: flex;
+        gap: 18px;
         overflow-x: auto;
-        padding: 20px 5px 40px;
+        padding: 4px 2px 24px;
         scrollbar-width: thin;
+        scrollbar-color: var(--gray) transparent;
     }
 
-    .ulasan-container::-webkit-scrollbar {
-        height: 6px;
-    }
-
-    .ulasan-container::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-    }
+    .ulasan-wrapper::-webkit-scrollbar { height: 5px; }
+    .ulasan-wrapper::-webkit-scrollbar-track { background: transparent; }
+    .ulasan-wrapper::-webkit-scrollbar-thumb { background: var(--gray); border-radius: 10px; }
 
     .ulasan-card {
-        min-width: 300px;
-        max-width: 300px;
-        background: white;
+        flex: 0 0 295px;
+        background: var(--white);
         padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #edf2f7;
+        border-radius: var(--radius);
+        border: 1px solid var(--gray);
+        box-shadow: var(--shadow-sm);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.25s;
     }
 
     .ulasan-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--blue-light);
     }
 
-    .kategori-badge {
-        font-size: 11px;
-        background: #e0e7ff;
+    .ulasan-card-top {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-grow: 1;
+    }
+
+    .ulasan-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .badge-kategori {
+        display: inline-block;
+        font-size: 0.67rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        background: var(--blue-xlight);
+        color: var(--blue-mid);
         padding: 4px 10px;
-        border-radius: 20px;
-        color: #3730a3;
-        font-weight: 600;
+        border-radius: 5px;
+        font-weight: 700;
     }
 
-    .berita-info img {
-        width: 55px;
-        height: 55px;
-        object-fit: cover;
-        border-radius: 8px;
+    .badge-program {
+        background: var(--blue-mid);
+        color: var(--white);
+        font-size: 0.66rem;
+        padding: 4px 9px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s;
     }
+
+    .badge-program:hover {
+        background: var(--blue-dark);
+        color: var(--white);
+    }
+
+    .news-mini-info {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px 10px;
+        background: var(--off-white);
+        border: 1px solid var(--gray);
+        border-radius: var(--radius-sm);
+    }
+
+    .news-mini-info img {
+        width: 42px;
+        height: 42px;
+        border-radius: 6px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: var(--blue-xlight);
+    }
+
+    .news-mini-title {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--text-main);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    .stars-display {
+        display: flex;
+        gap: 2px;
+        font-size: 0.9rem;
+    }
+
+    .stars-display .fas.fa-star { color: #f59e0b; }
+    .stars-display .far.fa-star { color: #d1d5db; }
 
     .ulasan-text {
-        font-size: 14px;
-        color: #4b5563;
+        font-size: 0.86rem;
+        font-style: italic;
+        color: #475569;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        line-height: 1.6;
+        line-height: 1.65;
+        flex-grow: 1;
     }
 
-    .btn-submit {
-        background: #2563eb;
-        border: none;
-        padding: 12px 40px;
-        font-weight: 600;
-        border-radius: 8px;
-        transition: 0.3s;
+    .user-footer {
+        font-weight: 700;
+        font-size: 0.83rem;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-top: 1px solid var(--gray);
+        padding-top: 12px;
+        margin-top: 14px;
     }
 
-    .btn-submit:hover {
-        background: #1d4ed8;
-        transform: scale(1.02);
+    .user-footer::before {
+        content: "";
+        width: 18px;
+        height: 3px;
+        background: var(--red);
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+    /* EMPTY */
+    .empty-ulasan {
+        text-align: center;
+        padding: 48px 24px;
+        color: var(--text-muted);
+        background: var(--white);
+        border-radius: var(--radius);
+        border: 1px solid var(--gray);
+        width: 100%;
+    }
+
+    .empty-ulasan i {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        color: var(--gray);
+        display: block;
+    }
+
+    /* ===================== */
+    /* RESPONSIVE            */
+    /* ===================== */
+    @media (max-width: 991px) {
+        :root { --page-px: 32px; }
+    }
+
+    @media (max-width: 768px) {
+        :root { --page-px: 20px; }
+
+        .ulasan-hero { padding: 48px var(--page-px); }
+
+        .form-wrapper { padding: 24px 20px; }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-left {
+            padding-right: 0;
+            border-right: none;
+            border-bottom: 1px solid var(--gray);
+            padding-bottom: 24px;
+            margin-bottom: 8px;
+        }
+
+        .form-right { padding-left: 0; }
+
+        .ulasan-card { flex: 0 0 270px; }
+    }
+
+    @media (max-width: 480px) {
+        :root { --page-px: 16px; }
+        .ulasan-hero h1 { font-size: 1.65rem; }
+        .btn-submit { width: 100%; justify-content: center; }
     }
 </style>
 
-<div class="container ulasan-page">
-
-    <div class="ulasan-hero shadow-sm">
-        <h1 class="fw-bold">Beri Ulasan</h1>
-        <p class="lead opacity-75">Bagikan pendapat Anda tentang program berita RBTV</p>
+{{-- ======================== --}}
+{{-- HERO                     --}}
+{{-- ======================== --}}
+<div class="ulasan-hero">
+    <div class="ulasan-hero-inner">
+        <div class="ulasan-hero-badge">
+            <i class="fas fa-star"></i>
+            Ulasan Program
+        </div>
+        <h1>Beri Ulasan</h1>
+        <p>Bagikan pendapat Anda tentang program berita RBTV</p>
     </div>
+</div>
 
+{{-- ======================== --}}
+{{-- MAIN CONTENT             --}}
+{{-- ======================== --}}
+<div class="ulasan-page">
+
+    {{-- ALERT NOTIF --}}
     @if(session('notif'))
-        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i> {{ session('notif') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-notif" id="alertNotif">
+            <i class="fas fa-check-circle"></i>
+            {{ session('notif') }}
         </div>
     @endif
 
+    {{-- ======================== --}}
+    {{-- FORM                     --}}
+    {{-- ======================== --}}
     <div class="form-wrapper">
+        <h3>Formulir Ulasan</h3>
+
         <form action="{{ route('ulasan.store') }}" method="POST" id="ulasanForm">
             @csrf
-            <h3 class="mb-4 fw-bold text-center">Formulir Ulasan</h3>
 
-            <div class="row g-4">
-                <div class="col-md-6 border-end">
-                    <div class="mb-3 custom-select-wrapper">
-                        <label class="form-label">Pilih Kategori</label>
-                        <select name="kategori_berita" id="kategoriSelect" class="form-select">
+            <div class="form-grid">
+
+                {{-- LEFT SIDE --}}
+                <div class="form-left">
+
+                    {{-- KATEGORI --}}
+                    <div class="form-group">
+                        <label>Pilih Kategori</label>
+                        <select name="kategori_berita" id="kategoriSelect">
                             <option value="">Semua Kategori</option>
                             <option value="Malam">Malam</option>
                             <option value="Daerah">Daerah</option>
@@ -183,179 +662,256 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Cari Berita</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                            <input type="text" id="searchBerita" class="form-control bg-light border-start-0" placeholder="Ketik judul berita...">
+                    {{-- SEARCH --}}
+                    <div class="form-group">
+                        <label>Cari Berita</label>
+                        <div class="input-icon-wrap">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchBerita" placeholder="Cari berdasarkan judul...">
                         </div>
                     </div>
 
-                    <div class="mb-3 custom-select-wrapper">
-                        <label class="form-label">Pilih Berita <span class="text-danger">*</span></label>
-                        <select name="judul_berita" id="judulSelect" class="form-select" required>
-                            <option value="">-- Pilih Berita --</option>
+                    {{-- JUDUL --}}
+                    <div class="form-group">
+                        <label>Pilih Berita <span class="required">*</span></label>
+                        <select name="judul_berita" id="judulSelect" required>
+                            <option value="">Pilih berita yang ingin diulas</option>
                             @foreach($berita as $row)
-                                <option value="{{ $row->judul_berita }}" data-kategori="{{ $row->kategori_berita }}">
+                                <option value="{{ $row->judul_berita }}"
+                                        data-kategori="{{ $row->kategori_berita }}">
                                     {{ $row->judul_berita }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label d-block">Rating</label>
+                    {{-- RATING --}}
+                    <div class="form-group">
+                        <label>Rating Bintang <span class="required">*</span></label>
                         <div class="rating-stars" id="starContainer">
-                            @for($i=1;$i<=5;$i++)
-                                <span class="star" data-value="{{ $i }}">★</span>
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="star" data-value="{{ $i }}">☆</span>
                             @endfor
                         </div>
                         <input type="hidden" name="rating" id="ratingValue" required>
                     </div>
+
                 </div>
 
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Ulasan Anda <span class="text-danger">*</span></label>
-                        <textarea name="isi_ulasan_raw" class="form-control" rows="4" placeholder="Tulis masukan Anda di sini..." required></textarea>
+                {{-- RIGHT SIDE --}}
+                <div class="form-right">
+
+                    {{-- ULASAN --}}
+                    <div class="form-group">
+                        <label>Ulasan Anda <span class="required">*</span></label>
+                        <textarea name="isi_ulasan_raw" placeholder="Tulis ulasan Anda..." required></textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Nama Pengirim</label>
-                        <input type="text" name="nama_user" id="namaInput" class="form-control" placeholder="Nama lengkap">
+                    {{-- NAMA --}}
+                    <div class="form-group">
+                        <label>Nama Pemberi Ulasan</label>
+                        <input type="text" name="nama_user" id="namaInput" placeholder="Nama lengkap Anda">
                     </div>
 
-                    <div class="anonim-box mt-4">
-                        <input type="checkbox" id="anonimCheck" class="form-check-input">
-                        <label class="form-check-label mb-0" for="anonimCheck">Kirim sebagai <strong>Anonim</strong></label>
+                    {{-- ANONIM --}}
+                    <div class="form-group">
+                        <label>Opsi Anonim</label>
+                        <div class="anonim-box">
+                            <input type="checkbox" id="anonimCheck">
+                            <label for="anonimCheck">Kirim sebagai anonim</label>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
 
-            <div class="text-center mt-5">
-                <button type="submit" class="btn btn-primary btn-submit btn-lg px-5">Kirim Ulasan Sekarang</button>
+            {{-- SUBMIT --}}
+            <div class="form-submit">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i>
+                    Kirim Ulasan
+                </button>
             </div>
+
         </form>
     </div>
 
-    <div class="ulasan-list-section mt-5 pt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">Ulasan Sebelumnya</h3>
-            <span class="text-muted small">Geser horizontal <i class="bi bi-arrow-right"></i></span>
-        </div>
-
-        <div class="ulasan-container">
-            @forelse($ulasan as $row)
-            <div class="ulasan-card shadow-sm">
-                <div class="top-content">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="kategori-badge text-uppercase">{{ $row->kategori_berita }}</span>
-                        <a href="{{ url('detail?judul='.urlencode($row->judul_berita).'&kategori='.$row->kategori_berita) }}" 
-                           class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 10px;">
-                            DETAIL
-                        </a>
-                    </div>
-
-                    <div class="berita-info d-flex gap-3 align-items-center mb-3">
-                        <img src="{{ asset('images/'.($row->gambar_berita ?? 'default.jpg')) }}" alt="Thumbnail">
-                        <div class="flex-grow-1">
-                            <div class="fw-bold text-dark lh-sm" style="font-size: 12px;">{{ $row->judul_berita }}</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-2 text-warning">
-                        @for($i=1; $i<=5; $i++)
-                            {!! $i <= $row->rating ? '★' : '<span class="text-muted">☆</span>' !!}
-                        @endfor
-                    </div>
-
-                    <p class="ulasan-text">
-                        "{{ $row->isi_ulasan_raw }}"
-                    </p>
-                </div>
-
-                <div class="user-info pt-3 border-top mt-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width:30px; height:30px;">
-                            <i class="bi bi-person text-secondary"></i>
-                        </div>
-                        <span class="fw-semibold text-secondary" style="font-size: 13px;">{{ $row->nama_user }}</span>
-                    </div>
-                </div>
-            </div>
-            @empty
-            <div class="w-100 text-center py-5">
-                <p class="text-muted">Belum ada ulasan untuk ditampilkan.</p>
-            </div>
-            @endforelse
-        </div>
+    {{-- ======================== --}}
+    {{-- ULASAN SEBELUMNYA        --}}
+    {{-- ======================== --}}
+    <div class="section-header">
+        <h2>Ulasan Sebelumnya</h2>
     </div>
+    <p class="section-subtitle">Feedback nyata dari penonton setia RBTV</p>
+
+    <div class="ulasan-wrapper">
+        @forelse($ulasan as $row)
+        <div class="ulasan-card">
+            <div class="ulasan-card-top">
+
+                {{-- HEADER --}}
+                <div class="ulasan-card-header">
+                    <span class="badge-kategori">{{ $row->kategori_berita }}</span>
+                    <a href="{{ url('detail/' . $row->id_berita) }}"
+                       class="badge-program">
+                        Detail Berita
+                    </a>
+                </div>
+
+                {{-- THUMB --}}
+                <div class="news-mini-info">
+                    <img src="{{ asset('uploads/'.($row->gambar_berita ?? 'default.jpg')) }}"
+                         alt="{{ $row->judul_berita }}"
+                         onerror="this.src='{{ asset('images/default.jpg') }}'">
+                    <div class="news-mini-title">{{ $row->judul_berita }}</div>
+                </div>
+
+                {{-- RATING --}}
+                <div class="stars-display">
+                    @for($i = 1; $i <= 5; $i++)
+                        <i class="{{ $i <= $row->rating ? 'fas' : 'far' }} fa-star"></i>
+                    @endfor
+                </div>
+
+                {{-- TEXT --}}
+                <p class="ulasan-text">"{{ $row->isi_ulasan_raw }}"</p>
+
+            </div>
+
+            {{-- USER --}}
+            <div class="user-footer">
+                {{ $row->nama_user }}
+            </div>
+        </div>
+        @empty
+        <div class="empty-ulasan">
+            <i class="fas fa-comment-slash"></i>
+            <p>Belum ada ulasan yang tersedia.</p>
+        </div>
+        @endforelse
+    </div>
+
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- 1. Star Rating Logic ---
-        const stars = document.querySelectorAll('.star');
-        const ratingInput = document.getElementById('ratingValue');
+document.addEventListener('DOMContentLoaded', function () {
 
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                const value = this.getAttribute('data-value');
-                ratingInput.value = value;
-                
-                stars.forEach(s => {
-                    s.classList.toggle('active', s.getAttribute('data-value') <= value);
-                    s.innerHTML = s.getAttribute('data-value') <= value ? '★' : '☆';
-                });
-            });
-        });
+    // ========================
+    // RATING INTERAKTIF
+    // ========================
+    const stars = document.querySelectorAll('.star');
+    const ratingValue = document.getElementById('ratingValue');
 
-        // --- 2. Anonymous Logic ---
-        const anonimCheck = document.getElementById('anonimCheck');
-        const namaInput = document.getElementById('namaInput');
-        let originalName = "";
+    stars.forEach(star => {
+        star.addEventListener('click', function () {
+            const val = this.dataset.value;
+            ratingValue.value = val;
 
-        anonimCheck.addEventListener('change', function() {
-            if(this.checked) {
-                originalName = namaInput.value;
-                namaInput.value = "Anonim";
-                namaInput.readOnly = true;
-            } else {
-                namaInput.value = originalName;
-                namaInput.readOnly = false;
-            }
-        });
-
-        // --- 3. Filter Berita Logic ---
-        const kategoriSelect = document.getElementById('kategoriSelect');
-        const searchBerita = document.getElementById('searchBerita');
-        const judulSelect = document.getElementById('judulSelect');
-        const options = Array.from(judulSelect.options);
-
-        function filterBerita() {
-            const kategori = kategoriSelect.value.toLowerCase();
-            const search = searchBerita.value.toLowerCase();
-
-            judulSelect.innerHTML = '<option value="">-- Pilih Berita --</option>';
-
-            options.forEach(opt => {
-                if(opt.value === "") return;
-                
-                const optKategori = opt.getAttribute('data-kategori').toLowerCase();
-                const optText = opt.text.toLowerCase();
-
-                const matchKategori = !kategori || optKategori === kategori;
-                const matchSearch = !search || optText.includes(search);
-
-                if(matchKategori && matchSearch) {
-                    judulSelect.appendChild(opt);
+            stars.forEach(s => {
+                if (s.dataset.value <= val) {
+                    s.classList.add('active');
+                    s.textContent = '★';
+                } else {
+                    s.classList.remove('active');
+                    s.textContent = '☆';
                 }
             });
-        }
+        });
 
-        kategoriSelect.addEventListener('change', filterBerita);
-        searchBerita.addEventListener('input', filterBerita);
+        // Hover preview
+        star.addEventListener('mouseenter', function () {
+            const val = this.dataset.value;
+            stars.forEach(s => {
+                s.style.color = s.dataset.value <= val ? '#f59e0b' : '#d1d5db';
+            });
+        });
+
+        star.addEventListener('mouseleave', function () {
+            const current = ratingValue.value;
+            stars.forEach(s => {
+                if (current) {
+                    s.style.color = s.dataset.value <= current ? '#f59e0b' : '#d1d5db';
+                } else {
+                    s.style.color = '#d1d5db';
+                }
+            });
+        });
     });
+
+    // ========================
+    // FILTER KATEGORI → JUDUL
+    // ========================
+    const kategoriSelect = document.getElementById('kategoriSelect');
+    const searchBerita   = document.getElementById('searchBerita');
+    const judulSelect    = document.getElementById('judulSelect');
+    const allOptions     = Array.from(judulSelect.options).slice(1); // skip placeholder
+
+    function filterJudul() {
+        const kategori = kategoriSelect.value.toLowerCase();
+        const search   = searchBerita.value.toLowerCase();
+
+        judulSelect.innerHTML = '<option value="">Pilih berita yang ingin diulas</option>';
+
+        allOptions.forEach(opt => {
+            const optKat  = (opt.getAttribute('data-kategori') || '').toLowerCase();
+            const optText = opt.text.toLowerCase();
+
+            const matchKat    = !kategori || optKat === kategori;
+            const matchSearch = !search || optText.includes(search);
+
+            if (matchKat && matchSearch) {
+                judulSelect.appendChild(opt.cloneNode(true));
+            }
+        });
+    }
+
+    kategoriSelect.addEventListener('change', filterJudul);
+    searchBerita.addEventListener('input', filterJudul);
+
+    // ========================
+    // ANONIM CHECKBOX
+    // ========================
+    const anonimCheck = document.getElementById('anonimCheck');
+    const namaInput   = document.getElementById('namaInput');
+    let savedName     = '';
+
+    anonimCheck.addEventListener('change', function () {
+        if (this.checked) {
+            savedName       = namaInput.value;
+            namaInput.value = 'Anonim';
+            namaInput.readOnly = true;
+            namaInput.style.color = 'var(--text-muted)';
+        } else {
+            namaInput.value = savedName;
+            namaInput.readOnly = false;
+            namaInput.style.color = 'var(--text-main)';
+        }
+    });
+
+    // ========================
+    // AUTO HIDE ALERT
+    // ========================
+    const alertBox = document.getElementById('alertNotif');
+    if (alertBox) {
+        setTimeout(() => {
+            alertBox.style.transition = 'opacity 0.5s';
+            alertBox.style.opacity = '0';
+            setTimeout(() => alertBox.remove(), 500);
+        }, 3000);
+    }
+
+    // ========================
+    // FORM VALIDATION
+    // ========================
+    document.getElementById('ulasanForm').addEventListener('submit', function (e) {
+        if (!ratingValue.value) {
+            alert('Rating bintang wajib dipilih!');
+            e.preventDefault();
+        }
+    });
+
+});
 </script>
 
 @endsection
