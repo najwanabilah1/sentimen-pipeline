@@ -21,7 +21,7 @@ class HomeController extends Controller
             ->where('ulasan.status', 'Approved')
             ->orderBy('ulasan.waktu_kirim', 'desc')
             ->limit(5)
-            ->select('ulasan.*', 'berita.gambar_berita')
+            ->select('ulasan.*', 'berita.id_berita', 'berita.gambar_berita')
             ->get();
 
         return view('index', compact('berita', 'ulasan'));
