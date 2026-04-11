@@ -9,11 +9,40 @@ use Symfony\Component\Process\Process;
 class SentimentController extends Controller
 {
     // =========================
-    // HALAMAN INDEX
+    // HALAMAN INDEX (FIXED)
     // =========================
     public function index()
     {
-        $reviews = Review::all();
+        $query = Review::query();
+
+        // 🔎 SEARCH
+        if (request()->filled('search')) {
+            $search = request('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('isi_ulasan_clean', 'like', "%{$search}%")
+                  ->orWhere('isi_ulasan_raw', 'like', "%{$search}%")
+                  ->orWhere('judul_berita', 'like', "%{$search}%")
+                  ->orWhere('nama_user', 'like', "%{$search}%");
+            });
+        }
+
+        // 🏷️ FILTER KATEGORI (sesuai DB kamu)
+        if (request()->filled('category')) {
+            $query->where('kategori_berita', request('category'));
+        }
+
+        // 😊 FILTER SENTIMEN
+        if (request()->filled('sentiment')) {
+            $query->where('sentimen', request('sentiment'));
+        }
+
+        // 🔽 SORT (PAKAI waktu_kirim, bukan created_at!)
+        $query->orderBy('waktu_kirim', 'desc');
+
+        // 🔥 AMBIL DATA
+        $reviews = $query->get();
+
         return view('admin.sentiment.index', compact('reviews'));
     }
 
@@ -22,7 +51,7 @@ class SentimentController extends Controller
     // =========================
     public function process()
     {
-        // 1. Ambil data
+        // 1. Ambil data yang belum dianalisis
         $dataUlasan = Review::whereNotNull('isi_ulasan_clean')
                             ->whereNull('sentimen')
                             ->get();
@@ -35,7 +64,7 @@ class SentimentController extends Controller
         $listTeks = $dataUlasan->pluck('isi_ulasan_clean')->toArray();
         $jsonTeks = json_encode($listTeks, JSON_UNESCAPED_UNICODE);
 
-        // 3. PATH PYTHON (VENV)
+        // 3. PATH PYTHON
         $pythonPath = base_path('venv\\Scripts\\python.exe');
         $scriptPath = base_path('python_services/analyzer.py');
 
@@ -47,7 +76,7 @@ class SentimentController extends Controller
 
         $process->setTimeout(120);
 
-        // 🔥 ENV FIX FINAL (WAJIB)
+        // ENV FIX
         $process->setEnv([
             'SYSTEMROOT' => getenv('SYSTEMROOT'),
             'WINDIR' => getenv('WINDIR'),
@@ -58,17 +87,13 @@ class SentimentController extends Controller
 
         $process->run();
 
-        // =========================
-        // HANDLE ERROR
-        // =========================
+        // ❌ HANDLE ERROR
         if (!$process->isSuccessful()) {
             \Log::error('Python Error: ' . $process->getErrorOutput());
-            return back()->with('error', 'Gagal memanggil Python: ' . $process->getErrorOutput());
+            return back()->with('error', 'Gagal memanggil Python');
         }
 
-        // =========================
-        // AMBIL OUTPUT
-        // =========================
+        // ✅ AMBIL OUTPUT
         $output = json_decode($process->getOutput(), true);
 
         if (!isset($output['sentiment'])) {
@@ -78,9 +103,7 @@ class SentimentController extends Controller
 
         $hasilSentimen = $output['sentiment'];
 
-        // =========================
-        // UPDATE DATABASE
-        // =========================
+        // ✅ UPDATE DATABASE
         foreach ($dataUlasan as $index => $review) {
             if (isset($hasilSentimen[$index])) {
                 $review->update([

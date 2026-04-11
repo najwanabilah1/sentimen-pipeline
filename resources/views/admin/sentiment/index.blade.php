@@ -90,9 +90,9 @@
                             <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1 block">Kategori Berita</label>
                             <select name="category" class="w-full px-5 py-4 bg-slate-50 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-2xl transition-all outline-none font-semibold text-sm appearance-none">
                                 <option value="">Semua Kategori</option>
-                                <option value="Politik" {{ request('category') == 'Politik' ? 'selected' : '' }}>Politik</option>
-                                <option value="Ekonomi" {{ request('category') == 'Ekonomi' ? 'selected' : '' }}>Ekonomi</option>
-                                <option value="Sosial" {{ request('category') == 'Sosial' ? 'selected' : '' }}>Sosial</option>
+                                <option value="Malam">Malam</option>
+                                <option value="Pekaro">Pekaro</option>
+                                <option value="Daerah">Daerah</option>
                             </select>
                         </div>
                         <div class="space-y-1">
