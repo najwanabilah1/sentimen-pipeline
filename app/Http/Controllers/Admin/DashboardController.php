@@ -28,9 +28,6 @@ class DashboardController extends Controller
         ];
 
         // 3. LOGIKA AKTUAL UNTUK ANALISIS AI
-        
-        // Menghitung Akurasi Data Terproses
-        // Logika: Berapa persen ulasan yang sudah memiliki label 'sentimen' dibanding total ulasan
         $totalUlasan = $stats['total_ulasan'];
         $ulasanTerproses = Review::whereNotNull('sentimen')->where('sentimen', '!=', '')->count();
         
@@ -46,6 +43,14 @@ class DashboardController extends Controller
             $trend = 'Negatif';
         }
 
-        return view('admin.dashboard', compact('stats', 'sentimentData', 'accuracy', 'trend'));
+        // Ambil 5 ulasan terbaru berdasarkan waktu_kirim atau created_at
+        $recentReviews = Review::orderBy('waktu_kirim', 'desc')->take(5)->get();
+        return view('admin.dashboard', compact(
+            'stats', 
+            'sentimentData', 
+            'accuracy', 
+            'trend', 
+            'recentReviews'
+        ));
     }
 }

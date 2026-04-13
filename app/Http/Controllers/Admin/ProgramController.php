@@ -22,7 +22,8 @@ class ProgramController extends Controller
                 'kategori_berita' => 'required|in:Malam,Daerah,Pekaro',
                 'tanggal_berita' => 'required|date',
                 'caption_berita' => 'required|string',
-                'gambar_berita' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+                'gambar_berita' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+                'link_berita' => 'nullable|url'
             ]);
 
             // Set default gambar
@@ -80,7 +81,8 @@ class ProgramController extends Controller
                 'kategori_berita' => 'required|in:Malam,Daerah,Pekaro',
                 'tanggal_berita' => 'required|date',
                 'caption_berita' => 'required|string',
-                'gambar_berita' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+                'gambar_berita' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+                'link_berita' => 'nullable|url'
             ]);
 
             // Handle file upload
