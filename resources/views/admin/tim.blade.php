@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="space-y-6">
+<div class="px-2 sm:px-4 lg:px-6 pt-2 pb-8 max-w-7xl mx-auto space-y-6">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h1 class="text-2xl font-bold text-gray-800">Tim Redaksi</h1>
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">

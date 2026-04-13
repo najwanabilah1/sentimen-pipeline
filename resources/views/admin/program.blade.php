@@ -30,57 +30,81 @@
     #beritaModal:not(.hidden) { display: flex; }
 </style>
 
-<div class="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto space-y-8">
+<div class="px-2 sm:px-4 lg:px-6 pt-2 pb-8 max-w-7xl mx-auto space-y-8">
     
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 animate-fade-in">
-        <div class="space-y-1">
-            <nav class="flex text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">
-                <span class="text-red-500">Konten</span>
-                <span class="mx-2">/</span>
-                <span>Manajemen Berita</span>
-            </nav>
-            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Pusat Publikasi</h1>
-            <p class="text-slate-500 flex items-center gap-2 font-medium">
-                <i class="fa-solid fa-feather-pointed text-red-500"></i>
-                Kelola artikel, berita daerah, dan tayangan kriminal RBTV.
-            </p>
-        </div>
-        
-        <div class="flex items-center gap-3">
-            <div class="hidden md:flex flex-col items-end mr-2">
-                <span class="text-[10px] font-extrabold text-slate-400 uppercase">Status Sistem</span>
-                <span class="text-xs font-bold text-emerald-500 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Terhubung
-                </span>
+    <div class="bg-gradient-to-br from-slate-900 via-[#0f172a] to-blue-950 rounded-[2rem] p-6 lg:p-10 shadow-2xl relative overflow-hidden animate-fade-in group">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-red-500/10 blur-[100px] rounded-full pointer-events-none transition-transform duration-700 group-hover:scale-150"></div>
+        <div class="absolute bottom-0 left-0 w-56 h-56 bg-indigo-500/10 blur-[80px] rounded-full pointer-events-none transition-transform duration-700 group-hover:scale-150"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+                <nav class="flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">
+                    <span class="text-red-400 bg-red-400/10 px-2 py-1 rounded-md">Konten</span>
+                    <span class="mx-3 text-slate-600">/</span>
+                    <span class="text-slate-300">Manajemen Berita</span>
+                </nav>
+                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-3">Pusat Publikasi <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-300">Konten</span></h1>
+                <p class="text-slate-400 text-sm md:text-base flex items-center gap-2 font-medium">
+                    <i class="fa-solid fa-feather-pointed text-red-500/80"></i>
+                    Kelola artikel, berita daerah, dan tayangan investigasi.
+                </p>
             </div>
-            <button onclick="openCreateModal()" class="group bg-slate-900 hover:bg-red-600 text-white px-7 py-4 rounded-2xl flex items-center gap-3 shadow-xl shadow-slate-200 transition-all duration-300 hover:-translate-y-1 active:scale-95">
-                <i class="fa-solid fa-plus group-hover:rotate-90 transition-transform duration-300"></i>
-                <span class="font-bold tracking-wide">Buat Berita Baru</span>
-            </button>
+            
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="openCreateModal()" class="flex-1 sm:flex-none group relative bg-red-600 hover:bg-red-500 text-white px-7 py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_40px_-10px_rgba(220,38,38,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 overflow-hidden">
+                    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                    <i class="fa-solid fa-plus relative z-10 group-hover:rotate-90 transition-transform duration-500"></i>
+                    <span class="font-black tracking-widest uppercase text-xs relative z-10 text-white">Buat Berita</span>
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in delay-100">
-        @php
-            $stats = [
-                ['label' => 'Total Berita', 'value' => $beritas->count(), 'icon' => 'fa-newspaper', 'color' => 'slate'],
-                ['label' => 'Malam', 'value' => $beritas->where('kategori_berita', 'Malam')->count(), 'icon' => 'fa-moon', 'color' => 'indigo'],
-                ['label' => 'Pekaro', 'value' => $beritas->where('kategori_berita', 'Pekaro')->count(), 'icon' => 'fa-mask', 'color' => 'amber'],
-                ['label' => 'Daerah', 'value' => $beritas->where('kategori_berita', 'Daerah')->count(), 'icon' => 'fa-map-location-dot', 'color' => 'emerald'],
-            ];
-        @endphp
-
-        @foreach($stats as $stat)
-        <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 transition-transform hover:scale-105 duration-300">
-            <div class="w-12 h-12 bg-{{ $stat['color'] }}-50 text-{{ $stat['color'] }}-500 rounded-2xl flex items-center justify-center text-xl">
-                <i class="fa-solid {{ $stat['icon'] }}"></i>
-            </div>
-            <div>
-                <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">{{ $stat['label'] }}</p>
-                <p class="text-xl font-black text-slate-800">{{ $stat['value'] }}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in delay-100">
+        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Total Berita</p>
+                    <h3 class="text-3xl font-black text-slate-800">{{ $beritas->count() }}</h3>
+                </div>
+                <div class="w-12 h-12 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center text-xl group-hover:bg-red-500 group-hover:text-white transition-all shadow-sm">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
             </div>
         </div>
-        @endforeach
+
+        <div class="bg-indigo-500 p-6 rounded-[2rem] shadow-lg shadow-indigo-200 hover:scale-105 transition-all text-white relative overflow-hidden group">
+            <div class="relative z-10 flex items-center justify-between">
+                <div>
+                    <p class="text-indigo-200 text-xs font-bold uppercase tracking-widest mb-1">Berita Malam</p>
+                    <h3 class="text-3xl font-black">{{ $beritas->where('kategori_berita', 'Malam')->count() }}</h3>
+                </div>
+                <i class="fa-solid fa-moon text-4xl text-indigo-300/40 group-hover:rotate-12 transition-transform"></i>
+            </div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
+        </div>
+
+        <div class="bg-rose-500 p-6 rounded-[2rem] shadow-lg shadow-rose-200 hover:scale-105 transition-all text-white relative overflow-hidden group">
+            <div class="relative z-10 flex items-center justify-between">
+                <div>
+                    <p class="text-rose-200 text-xs font-bold uppercase tracking-widest mb-1">Tayangan Pekaro</p>
+                    <h3 class="text-3xl font-black">{{ $beritas->where('kategori_berita', 'Pekaro')->count() }}</h3>
+                </div>
+                <i class="fa-solid fa-mask text-4xl text-rose-300/40 group-hover:-rotate-12 transition-transform"></i>
+            </div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-rose-400 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
+        </div>
+
+        <div class="bg-emerald-500 p-6 rounded-[2rem] shadow-lg shadow-emerald-200 hover:scale-105 transition-all text-white relative overflow-hidden group">
+            <div class="relative z-10 flex items-center justify-between">
+                <div>
+                    <p class="text-emerald-200 text-xs font-bold uppercase tracking-widest mb-1">Berita Daerah</p>
+                    <h3 class="text-3xl font-black">{{ $beritas->where('kategori_berita', 'Daerah')->count() }}</h3>
+                </div>
+                <i class="fa-solid fa-map-location-dot text-4xl text-emerald-300/40 group-hover:scale-110 transition-transform"></i>
+            </div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
+        </div>
     </div>
 
     <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-fade-in delay-200">

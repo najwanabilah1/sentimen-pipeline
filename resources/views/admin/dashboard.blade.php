@@ -59,7 +59,7 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
 </style>
 
-<div class="px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto space-y-8">
+<div class="px-2 sm:px-4 lg:px-6 pt-2 pb-8 max-w-7xl mx-auto space-y-8">
     
     <div class="hero-gradient rounded-[2rem] p-6 md:p-8 shadow-xl animate-fade-in relative">
         <div class="absolute top-0 right-0 w-48 h-48 bg-red-500/10 blur-[80px] rounded-full"></div>
@@ -231,6 +231,73 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="animate-fade-in" style="animation-delay: 0.8s">
+        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-50 blur-[100px] rounded-full pointer-events-none"></div>
+            
+            <div class="p-6 md:p-8 relative z-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                                <i class="fa-solid fa-calendar-days text-lg"></i>
+                            </div>
+                            <h4 class="font-extrabold text-gray-800 text-xl tracking-tight">Jadwal Penayangan</h4>
+                        </div>
+                        <p class="text-slate-500 text-sm ml-13">Program unggulan yang akan datang</p>
+                    </div>
+                    <a href="{{ route('admin.monitoring') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-50 text-indigo-600 text-sm font-bold rounded-xl transition-all border border-slate-200 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5">
+                        Kelola Jadwal <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    @forelse($jadwals as $jadwal)
+                    <div class="group/card relative bg-white hover:bg-slate-50 border border-slate-100 hover:border-indigo-200 p-5 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1">
+                        
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+                                {{ $jadwal->kategori }}
+                            </span>
+                            <span class="flex items-center text-xs font-bold text-slate-400">
+                                <i class="fa-regular fa-clock mr-1 text-slate-400 group-hover/card:text-indigo-400 transition-colors"></i> {{ $jadwal->durasi }} Min
+                            </span>
+                        </div>
+                        
+                        <h5 class="text-lg font-black text-gray-800 mb-1 line-clamp-1 group-hover/card:text-indigo-600 transition-colors">
+                            {{ $jadwal->judul }}
+                        </h5>
+                        
+                        <div class="flex items-center gap-4 mt-5 pt-4 border-t border-slate-100">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Tanggal</span>
+                                <span class="text-sm text-gray-700 font-bold">
+                                    {{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d M Y') }}
+                                </span>
+                            </div>
+                            <div class="w-px h-8 bg-slate-200 relative -top-1"></div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Waktu</span>
+                                <span class="text-sm font-black text-indigo-600">
+                                    {{ substr($jadwal->waktu, 0, 5) }} WIB
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="col-span-full py-12 text-center">
+                        <div class="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-slate-400 mb-4 border border-slate-100">
+                            <i class="fa-solid fa-calendar-xmark text-3xl"></i>
+                        </div>
+                        <p class="text-slate-500 font-medium">Belum ada jadwal penayangan yang tersedia.</p>
+                    </div>
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>
