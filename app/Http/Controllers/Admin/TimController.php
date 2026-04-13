@@ -11,12 +11,7 @@ class TimController extends Controller
     public function index()
     {
         $members = Member::latest()->get();
-        return view('admin.tim.index', compact('members'));
-    }
-
-    public function create()
-    {
-        return view('admin.tim.create');
+        return view('admin.tim', compact('members'));
     }
 
     public function store(Request $request)
@@ -34,16 +29,6 @@ class TimController extends Controller
         return redirect()->route('admin.tim.index')->with('success', 'Anggota tim berhasil ditambahkan');
     }
 
-    public function show(Member $member)
-    {
-        return view('admin.tim.show', compact('member'));
-    }
-
-    public function edit(Member $member)
-    {
-        return view('admin.tim.edit', compact('member'));
-    }
-
     public function update(Request $request, Member $member)
     {
         $validated = $request->validate([
@@ -56,7 +41,7 @@ class TimController extends Controller
         ]);
 
         $member->update($validated);
-        return redirect()->route('admin.tim.show', $member)->with('success', 'Anggota tim berhasil diupdate');
+        return redirect()->route('admin.tim.index')->with('success', 'Anggota tim berhasil diupdate');
     }
 
     public function destroy(Member $member)
