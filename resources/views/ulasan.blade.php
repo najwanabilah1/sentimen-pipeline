@@ -646,6 +646,16 @@
         <form action="{{ route('ulasan.store') }}" method="POST" id="ulasanForm">
             @csrf
 
+            @if ($errors->any())
+                <div class="alert-notif" style="background: #dc2626;">
+                    <ul style="margin:0; padding:0; list-style:none;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="form-grid">
 
                 {{-- LEFT SIDE --}}
@@ -653,9 +663,9 @@
 
                     {{-- KATEGORI --}}
                     <div class="form-group">
-                        <label>Pilih Kategori</label>
-                        <select name="kategori_berita" id="kategoriSelect">
-                            <option value="">Semua Kategori</option>
+                        <label>Pilih Kategori <span class="required">*</span></label>
+                        <select name="kategori_berita" id="kategoriSelect" required>
+                            <option value="" disabled selected>Pilih Kategori</option>
                             <option value="Malam">Malam</option>
                             <option value="Daerah">Daerah</option>
                             <option value="Pekaro">Pekaro</option>
@@ -868,6 +878,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     kategoriSelect.addEventListener('change', filterJudul);
     searchBerita.addEventListener('input', filterJudul);
+
+    judulSelect.addEventListener('change', function () {
+        const selectedCategory = this.selectedOptions[0]?.dataset?.kategori;
+        if (selectedCategory) {
+            kategoriSelect.value = selectedCategory;
+        }
+    });
 
     // ========================
     // ANONIM CHECKBOX

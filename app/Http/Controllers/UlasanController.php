@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\PreprocessService; 
+use App\Services\PreprocessService;
 
 class UlasanController extends Controller
 {
@@ -28,79 +28,97 @@ class UlasanController extends Controller
 
     public function store(Request $request)
     {
+        // 🔥 DEFAULT NAMA
         $nama = $request->nama_user ?: 'Anonim';
 
-        // 🔥 KIRIM KE PYTHON
+        // 🔥 AUTO AMBIL KATEGORI (opsional tapi disarankan)
+        $kategori = $request->kategori_berita;
+
+        if (!$kategori && $request->judul_berita) {
+            $berita = DB::table('berita')
+                ->where('judul_berita', $request->judul_berita)
+                ->first();
+
+            $kategori = $berita->kategori_berita ?? null;
+        }
+
+        $request->merge(['kategori_berita' => $kategori]);
+
+        // 🔥 VALIDASI (WAJIB)
+        $request->validate([
+            'kategori_berita' => 'required',
+            'judul_berita' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'isi_ulasan_raw' => 'required|string',
+        ]);
+
+        // 🔥 PREPROCESSING (PYTHON)
         $hasil = PreprocessService::process($request->isi_ulasan_raw);
 
-        // 🔥 AMBIL HASIL (PAKAI DEFAULT BIAR AMAN)
-        $status = $hasil['status'] ?? 'Pending';
-        // Normalisasi: pastikan value status cocok dengan ENUM di DB
+        // 🔥 AMBIL HASIL DENGAN DEFAULT
+        $status   = $hasil['status'] ?? 'Pending';
+        $clean    = $hasil['clean_text'] ?? null;
+        $is_spam  = $hasil['is_spam'] ?? 0;
+        $is_kasar = $hasil['is_kasar'] ?? 0;
+        $cosine   = $hasil['skor_cosine'] ?? 0;
+
+        // 🔥 NORMALISASI STATUS ENUM (BIAR GA ERROR DB)
         try {
-            $col = DB::select("SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ulasan' AND COLUMN_NAME = 'status' AND TABLE_SCHEMA = DATABASE()");
+            $col = DB::select("
+                SELECT COLUMN_TYPE 
+                FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE TABLE_NAME = 'ulasan' 
+                AND COLUMN_NAME = 'status' 
+                AND TABLE_SCHEMA = DATABASE()
+            ");
+
             if (!empty($col) && isset($col[0]->COLUMN_TYPE)) {
-                $type = $col[0]->COLUMN_TYPE; // e.g. enum('pending','Approved')
-                preg_match_all("/'([^']+)'/", $type, $matches);
-                $allowed = array_map(function($v){ return $v; }, $matches[1] ?? []);
+                preg_match_all("/'([^']+)'/", $col[0]->COLUMN_TYPE, $matches);
+                $allowed = $matches[1] ?? [];
 
-                // Try case-insensitive match
                 $found = null;
-                foreach ($allowed as $a) {
-                    if (strcasecmp($a, $status) === 0) { $found = $a; break; }
-                }
 
-                // If not found, try some common mappings
-                if (!$found) {
-                    $map = [
-                        'pending' => ['pending','Pending','PENDING'],
-                        'approved' => ['approved','Approved','APPROVED'],
-                        'rejected' => ['rejected','Rejected','REJECTED']
-                    ];
-                    foreach ($map as $target => $variants) {
-                        foreach ($variants as $v) {
-                            if (strcasecmp($v, $status) === 0 && in_array($target, $allowed, true)) {
-                                $found = $target; break 2;
-                            }
-                        }
+                foreach ($allowed as $a) {
+                    if (strcasecmp($a, $status) === 0) {
+                        $found = $a;
+                        break;
                     }
                 }
 
-                // Fallback to first allowed value
+                if (!$found && !empty($allowed)) {
+                    $found = $allowed[0]; // fallback
+                }
+
                 if ($found) {
                     $status = $found;
-                } elseif (!empty($allowed)) {
-                    $status = $allowed[0];
                 }
             }
         } catch (\Exception $e) {
-            // ignore and keep original status
+            // abaikan error, pakai status default
         }
-        $clean = $hasil['clean_text'] ?? null;
-        $is_spam = $hasil['is_spam'] ?? 0;
-        $is_kasar = $hasil['is_kasar'] ?? 0;
-        $cosine = $hasil['skor_cosine'] ?? 0;
 
+        // 🔥 INSERT KE DATABASE
         DB::table('ulasan')->insert([
-            'kategori_berita' => $request->kategori_berita,
-            'judul_berita' => $request->judul_berita,
-            'rating' => $request->rating,
-            'nama_user' => $nama,
+            'kategori_berita'   => $request->kategori_berita,
+            'judul_berita'      => $request->judul_berita,
+            'rating'            => $request->rating,
+            'nama_user'         => $nama,
 
-            // 🔥 DATA ASLI
-            'isi_ulasan_raw' => $request->isi_ulasan_raw,
+            // DATA ASLI
+            'isi_ulasan_raw'    => $request->isi_ulasan_raw,
 
-            // 🔥 HASIL PREPROCESSING
-            'isi_ulasan_clean' => $clean,
+            // HASIL PREPROCESSING
+            'isi_ulasan_clean'  => $clean,
 
-            // 🔥 STATUS DARI AI
-            'status' => $status,
+            // STATUS
+            'status'            => $status,
 
-            // 🔥 ANALISIS TAMBAHAN
-            'is_spam' => $is_spam,
-            'is_kasar' => $is_kasar,
-            'skor_cosine' => $cosine,
+            // ANALISIS TAMBAHAN
+            'is_spam'           => $is_spam,
+            'is_kasar'          => $is_kasar,
+            'skor_cosine'       => $cosine,
 
-            'waktu_kirim' => now()
+            'waktu_kirim'       => now()
         ]);
 
         return redirect()->back()->with('notif','Ulasan berhasil dikirim!');
