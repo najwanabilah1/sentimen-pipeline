@@ -78,16 +78,24 @@
     /* IMAGE */
     .detail-hero {
         overflow: hidden;
-        height: 380px;
+        min-height: 380px;
+        max-height: 600px;
         background: var(--blue-xlight);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
     }
 
     .detail-hero img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center;
         display: block;
-        transition: transform 0.5s ease;
+        transition: transform 0.3s ease;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
     }
 
     .detail-card:hover .detail-hero img {
@@ -205,6 +213,31 @@
         color: var(--white);
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-watch {
+        background: var(--red);
+        color: var(--white);
+        padding: 12px 28px;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 700;
+        transition: all 0.25s;
+        min-width: 160px;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+    }
+
+    .btn-watch:hover {
+        background: var(--red-dark);
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
     }
 
     .btn-secondary {
@@ -512,6 +545,12 @@
                     <i class="fas fa-star"></i>
                     Beri Ulasan
                 </a>
+                @if($data->link_berita)
+                <a href="{{ $data->link_berita }}" target="_blank" class="btn-watch">
+                    <i class="fas fa-play"></i>
+                    Tonton Selengkapnya
+                </a>
+                @endif
                 <a href="{{ url('/program') }}" class="btn-secondary">
                     <i class="fas fa-th-list"></i>
                     Lihat Program Lain

@@ -205,7 +205,7 @@
     <div class="card-login">
         <div class="text-center mb-4">
             <div class="logo-box">
-                <img src="{{ asset('logo-rbtv.png') }}" width="50" alt="Logo RBTV">
+                <img src="{{ asset('images/logo.png') }}" width="50" alt="Logo RBTV">
             </div>
             <h4>Manajemen RBTV</h4>
             <p class="text-muted small">Silakan login untuk akses dashboard</p>
