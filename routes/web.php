@@ -32,6 +32,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('tim', TimController::class);
     
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
+    Route::post('/monitoring/jadwal', [MonitoringController::class, 'storeJadwal']);
+    Route::put('/monitoring/jadwal/{id}', [MonitoringController::class, 'updateJadwal']);
+    Route::delete('/monitoring/jadwal/{id}', [MonitoringController::class, 'destroyJadwal']);
 
     Route::get('/sentiment', [SentimentController::class, 'index'])->name('sentiment.index');
     Route::post('/sentiment/process', [SentimentController::class, 'process'])->name('sentiment.process');

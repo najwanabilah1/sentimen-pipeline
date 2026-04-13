@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Evaluasi & Analisis Sentimen</h1>
             <p class="text-gray-500 text-sm">Monitoring ulasan penonton menggunakan Naive Bayes</p>
@@ -26,8 +26,9 @@
     @endif
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <table class="w-full text-left border-collapse">
-            <thead>
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse min-w-[800px]">
+                <thead>
                 <tr class="bg-gray-50/50 border-b border-gray-100">
                     <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Info User</th>
                     <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Ulasan Clean</th>
@@ -79,6 +80,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 @endsection

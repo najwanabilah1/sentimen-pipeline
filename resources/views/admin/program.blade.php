@@ -84,8 +84,8 @@
     </div>
 
     <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-fade-in delay-200">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
+        <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left min-w-[800px]">
                 <thead>
                     <tr class="bg-slate-50/50">
                         <th class="px-8 py-5 text-[10px] font-extrabold text-slate-400 uppercase tracking-[0.2em]">Info Konten</th>

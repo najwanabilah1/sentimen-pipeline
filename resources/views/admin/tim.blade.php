@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h1 class="text-2xl font-bold text-gray-800">Tim Redaksi</h1>
-        <div class="flex gap-3">
-            <div class="relative">
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div class="relative w-full sm:w-auto">
                 <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <input type="text" placeholder="Cari nama anggota..." class="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none">
+                <input type="text" placeholder="Cari nama anggota..." class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none">
             </div>
-            <button onclick="openCreateModal()" class="bg-gray-900 text-white px-4 py-2 rounded-xl text-sm hover:bg-gray-800 transition">Tambah Anggota</button>
+            <button onclick="openCreateModal()" class="w-full sm:w-auto bg-gray-900 text-white px-4 py-2 rounded-xl text-sm hover:bg-gray-800 transition whitespace-nowrap">Tambah Anggota</button>
         </div>
     </div>
 
@@ -72,7 +72,7 @@
                     <input type="text" name="nama" id="nama" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-red-600">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Posisi</label>
                         <input type="text" name="posisi" id="posisi" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-red-600">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
                         <input type="email" name="email" id="email" required class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-red-600">

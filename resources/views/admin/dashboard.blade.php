@@ -189,7 +189,7 @@
             </div>
             
             <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left border-collapse min-w-[700px]">
                     <thead>
                         <tr class="bg-gray-50/50">
                             <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Pemirsa</th>

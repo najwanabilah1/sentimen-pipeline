@@ -42,6 +42,11 @@
                 <span class="text-sm font-bold">Dashboard</span>
             </a>
 
+            <a href="{{ route('admin.monitoring') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.monitoring*') ? 'nav-active' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
+                <i class="fa-regular fa-calendar-days w-5"></i> 
+                <span class="text-sm font-bold">Jadwal</span>
+            </a>
+
             <a href="{{ route('admin.beritas.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->is('admin/beritas*') ? 'nav-active' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
                 <i class="fa-solid fa-clapperboard w-5"></i> 
                 <span class="text-sm font-bold">Berita</span>
