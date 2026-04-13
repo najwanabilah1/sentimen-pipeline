@@ -296,6 +296,20 @@ function resetImage() {
     document.getElementById('previewContainer').classList.add('hidden');
 }
 
+// Global Toast untuk notifikasi ringan
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    customClass: { popup: 'rounded-xl shadow-lg border border-slate-100' },
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
 // SweetAlert2 - Simpan/Update
 document.getElementById('beritaForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -315,16 +329,40 @@ document.getElementById('beritaForm').addEventListener('submit', function(e) {
     .then(res => res.json())
     .then(data => {
         if(data.success) {
-            Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Berita telah disimpan.', showConfirmButton: false, timer: 1500 })
-            .then(() => location.reload());
+            Swal.fire({ 
+                icon: 'success', 
+                title: 'Berhasil!', 
+                text: 'Berita telah disimpan.', 
+                showConfirmButton: false, 
+                timer: 1500,
+                customClass: { popup: 'rounded-[2rem]' } 
+            }).then(() => location.reload());
         } else {
-            Swal.fire('Gagal!', data.message || 'Terjadi kesalahan.', 'error');
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: data.message || 'Terjadi kesalahan.',
+                confirmButtonColor: '#e11d48',
+                customClass: {
+                    popup: 'rounded-[2rem]',
+                    confirmButton: 'rounded-xl font-bold px-8 py-3'
+                }
+            });
             btn.innerHTML = 'Simpan Publikasi';
             btn.disabled = false;
         }
     })
     .catch(() => {
-        Swal.fire('Error!', 'Koneksi bermasalah.', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Koneksi bermasalah.',
+            confirmButtonColor: '#e11d48',
+            customClass: {
+                popup: 'rounded-[2rem]',
+                confirmButton: 'rounded-xl font-bold px-8 py-3'
+            }
+        });
         btn.disabled = false;
     });
 });
@@ -339,7 +377,13 @@ function deleteBerita(id) {
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#64748b',
         confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        customClass: {
+            popup: 'rounded-[2rem]',
+            confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-6 py-2.5'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/admin/beritas/${id}`, {
@@ -354,7 +398,7 @@ function deleteBerita(id) {
                     row.style.opacity = '0';
                     setTimeout(() => {
                         row.remove();
-                        Swal.fire('Terhapus!', 'Berita telah dibuang.', 'success');
+                        Toast.fire({ icon: 'success', title: 'Berita telah dibuang.' });
                     }, 300);
                 }
             });
