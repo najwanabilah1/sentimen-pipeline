@@ -227,13 +227,30 @@
     }
 
     /* ===================== */
-    /* BERITA GRID           */
+    /* BERITA CAROUSEL        */
     /* ===================== */
     .berita-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+        display: flex;
         gap: 22px;
+        overflow-x: auto;
+        padding-bottom: 10px;
         margin-bottom: 56px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        align-items: stretch;
+    }
+
+    .berita-grid::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .berita-grid::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .berita-grid::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
     }
 
     .card-news {
@@ -245,7 +262,10 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
-        height: 100%;
+        min-width: 320px;
+        width: 320px;
+        flex: 0 0 320px;
+        scroll-snap-align: start;
     }
 
     .card-news:hover {
@@ -256,7 +276,7 @@
 
     .card-news-img-wrap {
         overflow: hidden;
-        height: 185px;
+        height: 210px;
         flex-shrink: 0;
         background: var(--blue-xlight);
     }

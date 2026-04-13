@@ -6,7 +6,7 @@ import os
 import re
 import json
 from difflib import SequenceMatcher
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # =============================
@@ -29,25 +29,16 @@ spam_patterns = spam_data["patterns"]
 def preprocess(text):
     text = text.lower()
     text = re.sub(r'[^a-z0-9\s]', '', text)
-
-    # deduplikasi karakter max 2
     text = re.sub(r'(.)\1{2,}', r'\1\1', text)
-
+    text = re.sub(r'\s+', ' ', text).strip()
     tokens = text.split()
     return tokens
 
-def generate_ngrams(tokens, n=2):
-    return [' '.join(tokens[i:i+n]) for i in range(len(tokens)-n+1)]
-
-# =============================
-# MAPPING ANGKA
-# =============================
 def map_angka(tokens):
     mapping = {'1':'i','4':'a','5':'s','0':'o','3':'e'}
     new_tokens = []
 
     for word in tokens:
-        # kalau pure angka jangan diubah
         if re.fullmatch(r'\d+', word):
             new_tokens.append(word)
         else:
@@ -57,8 +48,11 @@ def map_angka(tokens):
 
     return new_tokens
 
+def generate_ngrams(tokens, n=2):
+    return [' '.join(tokens[i:i+n]) for i in range(len(tokens)-n+1)]
+
 # =============================
-# FILTER KATA KASAR (FUZZY)
+# KASAR DETECTION
 # =============================
 def check_kasar(tokens):
     for word in tokens:
@@ -69,47 +63,36 @@ def check_kasar(tokens):
     return False
 
 # =============================
-# SPAM DETECTION (ADVANCED)
+# SPAM DETECTION
 # =============================
 def check_spam(text):
     text_lower = text.lower()
-    
-    # tokenisasi
     tokens = text_lower.split()
-    
-    # bigram
     bigrams = generate_ngrams(tokens, 2)
 
-    # ===== REGEX PATTERN =====
     for p in spam_patterns:
         if re.search(p, text_lower):
             return True
 
-    # ===== KEYWORD CHECK =====
     for keyword in spam_keywords:
-        # cek langsung
         if keyword in text_lower:
             return True
-        
-        # cek bigram
         if keyword in bigrams:
             return True
 
     return False
 
 # =============================
-# COSINE SIMILARITY
+# COSINE SIMILARITY (TF-IDF)
 # =============================
 def hitung_cosine(text1, text2):
-    vectorizer = CountVectorizer().fit_transform([text1, text2])
+    vectorizer = TfidfVectorizer().fit_transform([text1, text2])
     vectors = vectorizer.toarray()
-    
     cosine = cosine_similarity(vectors)
-    
     return cosine[0][1]
 
 # =============================
-# MAIN PROCESS
+# MAIN
 # =============================
 def main():
     if len(sys.argv) < 3:
@@ -124,6 +107,9 @@ def main():
 
     input_text = sys.argv[1]
     file_path = sys.argv[2]
+    nama_user = sys.argv[3] if len(sys.argv) > 3 else "Anonim"
+
+    is_anonim = (nama_user.lower() == "anonim")
 
     # =========================
     # LOAD HISTORY
@@ -135,11 +121,10 @@ def main():
         old_comments = []
 
     # =========================
-    # PREPROCESS PIPELINE
+    # PREPROCESS
     # =========================
     tokens = preprocess(input_text)
     tokens = map_angka(tokens)
-
     clean_text = " ".join(tokens)
 
     # =========================
@@ -150,26 +135,64 @@ def main():
 
     status = "Approved"
     max_cosine = 0
+    is_duplicate = False
+
+    # =========================
+    # KATEGORI PANJANG TEKS
+    # =========================
+    if len(tokens) <= 2:
+        kategori = "short"
+    elif len(tokens) <= 5:
+        kategori = "medium"
+    else:
+        kategori = "long"
 
     # =========================
     # DUPLICATE CHECK
     # =========================
-    if len(tokens) > 4:
-        for old in old_comments:
-            score = hitung_cosine(clean_text, old)
-            if score > max_cosine:
-                max_cosine = score
+    for old in old_comments:
 
-        if max_cosine >= 0.9:
-            status = "Duplikat"
+        # exact match (paling kuat)
+        if clean_text == old:
+            if not is_anonim or kategori != "short":
+                is_duplicate = True
+
+        score = hitung_cosine(clean_text, old)
+
+        if score > max_cosine:
+            max_cosine = score
+
+        if kategori == "long":
+            if score >= 0.8:
+                is_duplicate = True
+
+        elif kategori == "medium":
+            if score >= 0.9:
+                is_duplicate = True
+
+        elif kategori == "short":
+            if not is_anonim and score == 1.0:
+                is_duplicate = True
 
     # =========================
-    # PRIORITY LOGIC (PENTING!)
+    # PRIORITY LOGIC
     # =========================
     if is_kasar:
         status = "Rejected"
     elif is_spam:
         status = "Spam"
+    elif is_duplicate:
+        status = "Duplikat"
+
+    # =========================
+    # SIMPAN HISTORY
+    # =========================
+    try:
+        old_comments.append(clean_text)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(old_comments, f, ensure_ascii=False, indent=2)
+    except:
+        pass
 
     # =========================
     # OUTPUT
@@ -183,6 +206,7 @@ def main():
     }
 
     print(json.dumps(result, ensure_ascii=False))
+
 
 # =============================
 # ENTRY POINT
