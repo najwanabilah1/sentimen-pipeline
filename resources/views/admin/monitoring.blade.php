@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="space-y-6">
+<div class="px-2 sm:px-4 lg:px-6 pt-2 pb-8 max-w-7xl mx-auto space-y-6">
     <!-- HERO SECTION MEGA PREMIUM -->
     <div class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-[0_20px_50px_-12px_rgba(30,27,75,0.5)] group">
         <!-- Animated Background Blobs -->

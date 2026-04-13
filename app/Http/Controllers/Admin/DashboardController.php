@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Review;
 use App\Models\Member;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -45,12 +46,17 @@ class DashboardController extends Controller
 
         // Ambil 5 ulasan terbaru berdasarkan waktu_kirim atau created_at
         $recentReviews = Review::orderBy('waktu_kirim', 'desc')->take(5)->get();
+
+        // Ambil jadwal terdekat
+        $jadwals = Jadwal::orderBy('tanggal', 'desc')->take(5)->get();
+
         return view('admin.dashboard', compact(
             'stats', 
             'sentimentData', 
             'accuracy', 
             'trend', 
-            'recentReviews'
+            'recentReviews',
+            'jadwals'
         ));
     }
 }

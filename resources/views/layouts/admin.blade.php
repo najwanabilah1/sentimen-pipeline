@@ -92,7 +92,7 @@
         </header>
 
         <div class="flex-1 overflow-y-auto">
-            <div class="p-6 md:p-10">
+            <div class="p-4 md:px-8 md:py-6">
                 @yield('content')
             </div>
         </div>

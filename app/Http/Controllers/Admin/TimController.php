@@ -29,24 +29,24 @@ class TimController extends Controller
         return redirect()->route('admin.tim.index')->with('success', 'Anggota tim berhasil ditambahkan');
     }
 
-    public function update(Request $request, Member $member)
+    public function update(Request $request, Member $tim)
     {
         $validated = $request->validate([
             'nama' => 'required|string',
             'posisi' => 'required|string',
             'departemen' => 'required|in:Produksi,Teknis,Redaksi,Marketing,IT',
-            'email' => 'required|email|unique:members,email,' . $member->id,
+            'email' => 'required|email|unique:members,email,' . $tim->id,
             'telepon' => 'nullable|string',
             'status' => 'required|in:Aktif,Cuti,Tidak Aktif'
         ]);
 
-        $member->update($validated);
+        $tim->update($validated);
         return redirect()->route('admin.tim.index')->with('success', 'Anggota tim berhasil diupdate');
     }
 
-    public function destroy(Member $member)
+    public function destroy(Member $tim)
     {
-        $member->delete();
+        $tim->delete();
         return redirect()->route('admin.tim.index')->with('success', 'Anggota tim berhasil dihapus');
     }
 }
