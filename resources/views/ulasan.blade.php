@@ -735,6 +735,7 @@
                 </div>
 
             </div>
+            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
 
             {{-- SUBMIT --}}
             <div class="form-submit">
@@ -927,8 +928,17 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
         }
     });
+    // ========================
+    // RECAPTCHA V3
+    // ========================
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LcrmbUsAAAAAIC6Q4QDMsqhqMqBGJu4OqPS8L--', {action: 'submit'}).then(function(token) {
+            console.log("TOKEN RECAPTCHA:", token);
+            document.getElementById('recaptcha_token').value = token;
+        });
+    });    
 
 });
 </script>
-
+<script src="https://www.google.com/recaptcha/api.js?render=6LcrmbUsAAAAAIC6Q4QDMsqhqMqBGJu4OqPS8L--"></script>
 @endsection

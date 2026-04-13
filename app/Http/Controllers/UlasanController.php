@@ -28,6 +28,32 @@ class UlasanController extends Controller
 
     public function store(Request $request)
     {
+        
+        // 🔥 VALIDASI (WAJIB)
+        $request->validate([
+            'kategori_berita' => 'required',
+            'judul_berita' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'isi_ulasan_raw' => 'required|string',
+            'recaptcha_token' => 'required'
+        ]);
+
+        // 2. VALIDASI RECAPTCHA
+        $recaptcha = $request->recaptcha_token;
+
+        $response = file_get_contents(
+            "https://www.google.com/recaptcha/api/siteverify?secret=6LcrmbUsAAAAAAnIuFQHkTxd6AUBk3h7a4oqRUqW&response=".$recaptcha
+        );
+
+        $result = json_decode($response);
+
+        // Debug (opsional)
+        \Log::info('RECAPTCHA RESULT', (array)$result);
+
+        if (!$result || !$result->success || $result->score < 0.5) {
+            return redirect()->back()->with('notif', 'Verifikasi gagal! Terindikasi bot.');
+        }
+
         // 🔥 DEFAULT NAMA
         $nama = $request->nama_user ?: 'Anonim';
 
@@ -43,14 +69,6 @@ class UlasanController extends Controller
         }
 
         $request->merge(['kategori_berita' => $kategori]);
-
-        // 🔥 VALIDASI (WAJIB)
-        $request->validate([
-            'kategori_berita' => 'required',
-            'judul_berita' => 'required|string|max:255',
-            'rating' => 'required|integer|min:1|max:5',
-            'isi_ulasan_raw' => 'required|string',
-        ]);
 
         // 🔥 PREPROCESSING (PYTHON)
         $hasil = PreprocessService::process($request->isi_ulasan_raw);
