@@ -50,19 +50,26 @@
                     </span>
                     Live Monitoring Active
                 </div>
-                <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">Analisis Sentimen <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-amber-400">AI</span></h1>
-                <p class="text-slate-400 text-xs md:text-sm max-w-lg leading-relaxed">
+                <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">Analisis Sentimen <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-amber-400">AI</span></h1>
+                <p class="text-slate-400 text-sm md:text-base max-w-lg leading-relaxed">
                     Pantau persepsi publik secara instan melalui engine RBTV-AI.
                 </p>
             </div>
             
-            <form action="{{ route('admin.sentiment.process') }}" method="POST" class="shrink-0">
-                @csrf
-                <button type="submit" class="group relative w-full lg:w-auto bg-white hover:bg-slate-50 text-slate-900 px-7 py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] transition-all duration-300 hover:-translate-y-1 active:scale-95">
-                    <i class="fa-solid fa-wand-magic-sparkles text-red-500 group-hover:rotate-12 transition-transform duration-300"></i>
-                    <span class="font-extrabold text-xs tracking-wide">Jalankan Engine AI</span>
-                </button>
-            </form>
+            <div class="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+                <a href="{{ route('admin.sentiment.pdf') }}" target="_blank" class="group relative w-full lg:w-auto bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-6 py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg transition-all duration-300 hover:-translate-y-1 active:scale-95">
+                    <i class="fa-solid fa-file-pdf text-red-400 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                    <span class="font-extrabold text-xs tracking-wide">Laporan Evaluasi</span>
+                </a>
+                
+                <form action="{{ route('admin.sentiment.process') }}" method="POST" class="w-full lg:w-auto shrink-0">
+                    @csrf
+                    <button type="submit" class="group relative w-full lg:w-auto bg-white hover:bg-slate-50 text-slate-900 px-7 py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] transition-all duration-300 hover:-translate-y-1 active:scale-95">
+                        <i class="fa-solid fa-wand-magic-sparkles text-red-500 group-hover:rotate-12 transition-transform duration-300"></i>
+                        <span class="font-extrabold text-xs tracking-wide">Jalankan Engine AI</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -154,21 +161,21 @@
                     <table class="w-full text-left whitespace-nowrap min-w-[600px]">
                         <thead>
                             <tr class="bg-slate-50/80 border-b border-slate-100">
-                                <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider">Detail Berita</th>
-                                <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider">Konteks Ulasan</th>
-                                <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider text-center">AI Result</th>
-                                <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider text-right">Waktu</th>
+                                <th class="px-4 py-3 text-[10px] font-black text-slate-400 uppercase tracking-widest pl-6">Detail Berita</th>
+                                <th class="px-4 py-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">Konteks Ulasan</th>
+                                <th class="px-4 py-3 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">AI Result</th>
+                                <th class="px-4 py-3 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right pr-6">Waktu</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 text-sm">
                             @forelse($reviews as $review)
                             <tr class="hover:bg-slate-50/80 transition-colors group">
                                 <td class="px-6 py-5">
-                                    <div class="flex flex-col gap-1.5 max-w-[250px]">
+                                    <div class="flex flex-col gap-1 max-w-[250px]">
                                         <span class="font-bold text-slate-800 text-sm group-hover:text-red-600 transition-colors truncate" title="{{ $review->judul_berita }}">
                                             {{ $review->judul_berita }}
                                         </span>
-                                        <span class="inline-flex w-fit px-2.5 py-1 bg-slate-100 text-slate-500 rounded text-[10px] font-extrabold uppercase tracking-widest border border-slate-200">
+                                        <span class="inline-flex w-fit px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[9px] font-black uppercase tracking-widest border border-slate-200">
                                             {{ $review->kategori_berita }}
                                         </span>
                                     </div>
@@ -179,7 +186,7 @@
                                             {{ strtoupper(substr($review->nama_user, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <p class="font-medium text-slate-600 leading-relaxed italic line-clamp-2 max-w-[300px] sm:max-w-md text-sm whitespace-normal">
+                                            <p class="font-medium text-slate-600 leading-relaxed italic line-clamp-2 max-w-[300px] sm:max-w-md text-[13px] whitespace-normal">
                                                 "{{ $review->isi_ulasan_clean ?? $review->isi_ulasan_raw }}"
                                             </p>
                                         </div>
@@ -188,20 +195,20 @@
                                 <td class="px-6 py-5 text-center">
                                     <div class="flex justify-center flex-col items-center gap-1.5">
                                         @if($review->sentimen == 'Positif')
-                                            <span class="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-[11px] font-extrabold flex items-center gap-1.5 border border-emerald-100 shadow-sm w-fit">
-                                                <i class="fa-solid fa-face-smile text-sm"></i> POSITIF
+                                            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded w-fit text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-100 shadow-sm">
+                                                <i class="fa-solid fa-face-smile text-xs"></i> POSITIF
                                             </span>
                                         @elseif($review->sentimen == 'Negatif')
-                                            <span class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-[11px] font-extrabold flex items-center gap-1.5 border border-rose-100 shadow-sm w-fit">
-                                                <i class="fa-solid fa-face-frown text-sm"></i> NEGATIF
+                                            <span class="px-2.5 py-1 bg-rose-50 text-rose-600 rounded w-fit text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-rose-100 shadow-sm">
+                                                <i class="fa-solid fa-face-frown text-xs"></i> NEGATIF
                                             </span>
                                         @elseif($review->sentimen == 'Netral')
-                                            <span class="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-[11px] font-extrabold flex items-center gap-1.5 border border-slate-200 shadow-sm w-fit">
-                                                <i class="fa-solid fa-face-meh text-sm"></i> NETRAL
+                                            <span class="px-2.5 py-1 bg-slate-50 text-slate-600 rounded w-fit text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-slate-200 shadow-sm">
+                                                <i class="fa-solid fa-face-meh text-xs"></i> NETRAL
                                             </span>
                                         @else
-                                            <span class="px-3 py-1.5 bg-amber-50 text-amber-600 rounded-lg text-[11px] font-extrabold flex items-center gap-1.5 animate-pulse border border-amber-100 shadow-sm w-fit">
-                                                <i class="fa-solid fa-spinner fa-spin text-sm"></i> WAIT
+                                            <span class="px-2.5 py-1 bg-amber-50 text-amber-600 rounded w-fit text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 animate-pulse border border-amber-100 shadow-sm">
+                                                <i class="fa-solid fa-spinner fa-spin text-xs"></i> WAIT
                                             </span>
                                         @endif
                                     </div>

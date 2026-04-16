@@ -65,13 +65,26 @@ def analyze():
         vectorizer = joblib.load(vectorizer_path)
 
         # =========================
-        # PREDIKSI
+        # PREDIKSI DENGAN RULE-BASED & OOV HANDLING
         # =========================
         tfidf_matrix = vectorizer.transform(input_ulasan)
-        predictions = model.predict(tfidf_matrix)
+        base_predictions = model.predict(tfidf_matrix)
 
-        # bersihkan hasil
-        predictions = [str(p).strip().lower() for p in predictions]
+        predictions = []
+        for i, text in enumerate(input_ulasan):
+            text_lower = str(text).strip().lower()
+            
+            # 1. Rule-based: Kata kunci spesifik yang selalu Netral
+            neutral_keywords = ['bismillah', 'assalamualaikum', 'alhamdulillah', 'tes', 'test', 'hadir', 'nyimak']
+            is_explicit_neutral = any(text_lower == kw or text_lower.startswith(kw) for kw in neutral_keywords)
+            
+            # 2. OOV (Out of Vocabulary): Jika model tidak mengenali satu kata pun
+            is_unknown_words = (tfidf_matrix[i].nnz == 0)
+
+            if is_explicit_neutral or is_unknown_words:
+                predictions.append('netral')
+            else:
+                predictions.append(str(base_predictions[i]).strip().lower())
 
         # =========================
         # OUTPUT

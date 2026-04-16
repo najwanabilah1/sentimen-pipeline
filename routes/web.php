@@ -37,5 +37,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('/monitoring/jadwal/{id}', [MonitoringController::class, 'destroyJadwal']);
 
     Route::get('/sentiment', [SentimentController::class, 'index'])->name('sentiment.index');
+    Route::get('/sentiment/pdf', [SentimentController::class, 'downloadPdf'])->name('sentiment.pdf');
     Route::post('/sentiment/process', [SentimentController::class, 'process'])->name('sentiment.process');
 });

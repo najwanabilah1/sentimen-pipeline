@@ -14,7 +14,7 @@
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]"></span>
                     Sistem Penjadwalan Live
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-3">
+                <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight mb-3">
                     Manajemen <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-pink-400 to-yellow-400 drop-shadow-sm">Jadwal</span>
                 </h1>
                 <p class="text-indigo-100/70 text-sm md:text-base max-w-xl leading-relaxed font-medium">
@@ -34,7 +34,7 @@
         <div class="lg:col-span-2">
             <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-shadow duration-500 overflow-hidden h-full flex flex-col">
                 <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
-                    <h3 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-3" id="currentMonthYear">
+                    <h3 class="text-xl font-black text-slate-800 tracking-tight flex items-center gap-3" id="currentMonthYear">
                         Februari 2026
                     </h3>
                     <div class="flex gap-2">
@@ -66,21 +66,21 @@
             <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-[2rem] p-8 shadow-lg shadow-red-200/50 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
                 <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4xKSIvPjwvc3ZnPg==')] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <p class="text-xs text-red-100 mb-1 font-black uppercase tracking-widest">Berita Malam</p>
-                <p class="text-4xl font-black text-white" id="count-Malam">0</p>
+                <p class="text-3xl font-black text-white" id="count-Malam">0</p>
                 <i class="fa-solid fa-video absolute -right-4 -bottom-4 text-7xl text-white/10 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500"></i>
             </div>
             
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2rem] p-8 shadow-lg shadow-blue-200/50 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
                 <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4xKSIvPjwvc3ZnPg==')] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <p class="text-xs text-blue-100 mb-1 font-black uppercase tracking-widest">Daerah</p>
-                <p class="text-4xl font-black text-white" id="count-Daerah">0</p>
+                <p class="text-3xl font-black text-white" id="count-Daerah">0</p>
                 <i class="fa-solid fa-map-location-dot absolute -right-4 -bottom-4 text-7xl text-white/10 group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500"></i>
             </div>
             
             <div class="bg-gradient-to-br from-violet-500 to-purple-600 rounded-[2rem] p-8 shadow-lg shadow-violet-200/50 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
                 <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4xKSIvPjwvc3ZnPg==')] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <p class="text-xs text-violet-100 mb-1 font-black uppercase tracking-widest">Pekaro</p>
-                <p class="text-4xl font-black text-white" id="count-Pekaro">0</p>
+                <p class="text-3xl font-black text-white" id="count-Pekaro">0</p>
                 <i class="fa-solid fa-masks-theater absolute -right-4 -bottom-4 text-7xl text-white/10 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500"></i>
             </div>
         </div>
@@ -89,7 +89,7 @@
     <!-- SCHEDULE LIST -->
     <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden mt-8">
         <div class="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
-            <h3 class="text-lg font-black text-slate-800 flex items-center gap-3">
+            <h3 class="text-base font-black text-slate-800 flex items-center gap-3">
                 <div class="w-10 h-10 bg-white shadow-sm border border-slate-100 rounded-xl flex items-center justify-center text-red-500">
                     <i class="fa-regular fa-calendar-check"></i>
                 </div>
@@ -211,10 +211,10 @@
             <div class="group flex flex-col sm:flex-row sm:items-center gap-4 p-5 bg-white border border-slate-100 hover:border-slate-300 shadow-[0_2px_10px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-2xl transition-all relative overflow-hidden">
                 <div class="${badgeStyle} absolute left-0 top-0 bottom-0 w-2 opacity-90 group-hover:w-3 transition-all duration-300"></div>
                 <div class="flex items-center gap-3 sm:w-28 flex-shrink-0 ml-4">
-                    <span class="font-black text-slate-800 text-2xl tracking-tight">${item.waktu}</span>
+                    <span class="font-black text-slate-800 text-xl tracking-tight">${item.waktu}</span>
                 </div>
                 <div class="flex-1 min-w-0 pr-20">
-                    <h4 class="font-black text-slate-900 mb-2 text-lg lg:text-xl truncate">${item.judul}</h4>
+                    <h4 class="font-black text-slate-900 mb-2 text-base lg:text-lg truncate">${item.judul}</h4>
                     <div class="flex items-center flex-wrap gap-3">
                         <span class="${badgeStyle} text-white shadow-sm text-[10px] uppercase font-black tracking-widest px-3 py-1 rounded-md">
                             ${item.kategori}
@@ -261,7 +261,7 @@
 
             const div = document.createElement('div');
             div.onclick = () => selectDate(day, month, year);
-            div.className = "relative text-center py-3.5 text-sm font-black rounded-xl cursor-pointer mx-1 flex items-center justify-center transition-all duration-300 transform outline-none ";
+            div.className = "relative text-center py-2.5 text-xs font-black rounded-xl cursor-pointer mx-1 flex items-center justify-center transition-all duration-300 transform outline-none ";
             
             if (isSelected) {
                 div.className += "bg-gradient-to-br from-red-500 to-red-600 text-white shadow-lg shadow-red-200 scale-[1.15] z-10 border border-red-500 ";
