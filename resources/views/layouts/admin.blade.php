@@ -27,11 +27,16 @@
 
     <div id="overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden md:hidden"></div>
 
-    <aside id="sidebar" class="sidebar-transition fixed md:static z-50 w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col h-full -translate-x-full md:translate-x-0">
+    <aside id="sidebar" class="sidebar-transition fixed md:static z-50 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col h-full -translate-x-full md:translate-x-0">
         
-        <div class="p-8 flex items-center justify-between">
-            <img src="{{ asset('images/logo.png') }}" alt="RBTV" class="h-7 w-auto">
-            <button id="closeSidebar" class="md:hidden p-2 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
+        <div class="px-6 py-8 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+                <img src="{{ asset('images/logo.png') }}" alt="RBTV" class="h-8 w-auto">
+                <button id="closeSidebar" class="md:hidden p-2 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mt-1">
+                <p class="text-[10px] font-black text-red-500 dark:text-red-400 uppercase tracking-widest">Sistem Monitoring Ulasan</p>
+            </div>
         </div>
 
         <nav class="flex-1 px-4 space-y-1.5 overflow-y-auto">
@@ -64,12 +69,20 @@
         </nav>
 
         <div class="p-4 border-t border-slate-100 dark:border-slate-700 space-y-2">
-            <div class="flex items-center justify-between px-2 mb-4">
-                <div class="w-10 h-10 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-black text-sm shadow-lg">N</div>
-                
-                <button id="darkModeToggle" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-yellow-400 transition-all">
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                    <i class="fa-solid fa-sun hidden dark:block"></i>
+            <div class="px-2 mb-6">
+                <button id="darkModeToggle" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-white dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-lg bg-orange-50 dark:bg-indigo-500/20 flex items-center justify-center text-orange-500 dark:text-indigo-400 transition-colors">
+                            <i class="fa-solid fa-sun dark:hidden text-[13px]"></i>
+                            <i class="fa-solid fa-moon hidden dark:block text-[13px]"></i>
+                        </div>
+                        <span class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase tracking-wide dark:hidden">Mode Terang</span>
+                        <span class="text-xs font-black text-slate-600 dark:text-slate-300 uppercase tracking-wide hidden dark:block">Mode Gelap</span>
+                    </div>
+                    
+                    <div class="w-9 h-5 bg-slate-200 dark:bg-indigo-500 rounded-full relative transition-colors duration-300 shadow-inner">
+                        <div class="w-4 h-4 bg-white rounded-full absolute top-0.5 left-0.5 dark:translate-x-4 transition-transform duration-300 shadow-sm"></div>
+                    </div>
                 </button>
             </div>
 

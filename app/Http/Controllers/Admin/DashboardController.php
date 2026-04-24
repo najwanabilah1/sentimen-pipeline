@@ -47,8 +47,10 @@ class DashboardController extends Controller
         // Ambil 5 ulasan terbaru berdasarkan waktu_kirim atau created_at
         $recentReviews = Review::orderBy('waktu_kirim', 'desc')->take(5)->get();
 
-        // Ambil jadwal terdekat
-        $jadwals = Jadwal::orderBy('tanggal', 'desc')->take(5)->get();
+        // Ambil jadwal hari ini
+        $jadwals = Jadwal::whereDate('tanggal', \Carbon\Carbon::today())
+            ->orderBy('waktu', 'asc')
+            ->get();
 
         return view('admin.dashboard', compact(
             'stats', 

@@ -183,9 +183,9 @@
         <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-50 flex justify-between items-center bg-white">
                 <h4 class="font-extrabold text-gray-800 text-lg">Ulasan Terbaru</h4>
-                <button class="px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors border border-red-100">
+                <a href="{{ route('admin.sentiment.index') }}" class="px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors border border-red-100 flex items-center">
                     Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i>
-                </button>
+                </a>
             </div>
             
             <div class="overflow-x-auto custom-scrollbar">
@@ -249,7 +249,7 @@
                             </div>
                             <h4 class="font-extrabold text-gray-800 text-xl tracking-tight">Jadwal Penayangan</h4>
                         </div>
-                        <p class="text-slate-500 text-sm ml-13">Program unggulan yang akan datang</p>
+                        <p class="text-slate-500 text-sm ml-13">Program unggulan hari ini</p>
                     </div>
                     <a href="{{ route('admin.monitoring') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-50 text-indigo-600 text-sm font-bold rounded-xl transition-all border border-slate-200 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5">
                         Kelola Jadwal <i class="fa-solid fa-arrow-right"></i>
@@ -294,7 +294,7 @@
                         <div class="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-slate-400 mb-4 border border-slate-100">
                             <i class="fa-solid fa-calendar-xmark text-3xl"></i>
                         </div>
-                        <p class="text-slate-500 font-medium">Belum ada jadwal penayangan yang tersedia.</p>
+                        <p class="text-slate-500 font-medium">Belum ada jadwal penayangan untuk hari ini.</p>
                     </div>
                     @endforelse
                 </div>
