@@ -138,7 +138,7 @@
                 &copy; {{ date('Y') }} <strong>RBTV Review System</strong>. All rights reserved.
             </p>
             <p class="footer-made">
-                Dibuat oleh Mahasiswa <strong>Universitas Bengkulu</strong>
+                Developed by <strong>Sallaa Fikriyatul & Najwa Nabilah</strong>
             </p>
         </div>
     </div>

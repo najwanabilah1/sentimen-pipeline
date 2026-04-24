@@ -251,7 +251,8 @@
 
         <div class="text-center mt-4">
             <p class="text-muted" style="font-size: 0.75rem;">
-                &copy; 2026 <strong>RBTV Management</strong> <br> Bengkulu, Indonesia.
+                &copy; 2026 <strong>RBTV Management</strong><br>
+                Developed by Najwa & Sallaa
             </p>
         </div>
     </div>
