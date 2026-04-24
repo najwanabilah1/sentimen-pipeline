@@ -426,7 +426,7 @@
 
             <div class="sosmed-grid">
 
-                <a href="https://wa.me/6281234567890" target="_blank" class="sosmed-btn whatsapp">
+                <a href="https://wa.me/6282186599322" target="_blank" class="sosmed-btn whatsapp">
                     <div class="sosmed-icon">
                         <i class="fab fa-whatsapp"></i>
                     </div>
@@ -436,7 +436,7 @@
                     </div>
                 </a>
 
-                <a href="mailto:info@rbtv.co.id" class="sosmed-btn email">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@rbtv.co.id&subject=Hubungi%20RBTV%20Review%20System" target="_blank" class="sosmed-btn email">
                     <div class="sosmed-icon">
                         <i class="fas fa-envelope"></i>
                     </div>
@@ -446,7 +446,7 @@
                     </div>
                 </a>
 
-                <a href="https://instagram.com/rbtv" target="_blank" class="sosmed-btn instagram">
+                <a href="https://www.instagram.com/rbtvcamkoha?igsh=ZmZpa2RxZ2wzNXE2" target="_blank" class="sosmed-btn instagram">
                     <div class="sosmed-icon">
                         <i class="fab fa-instagram"></i>
                     </div>
@@ -456,7 +456,7 @@
                     </div>
                 </a>
 
-                <a href="https://youtube.com" target="_blank" class="sosmed-btn youtube">
+                <a href="https://www.youtube.com/@RBTVMAKINCAMKOHA" target="_blank" class="sosmed-btn youtube">
                     <div class="sosmed-icon">
                         <i class="fab fa-youtube"></i>
                     </div>
@@ -490,7 +490,7 @@
                 </div>
                 <div class="info-text">
                     <strong>Telepon</strong>
-                    <p>+62 812 3456 7890</p>
+                    <p>+62 821 8659 9322</p>
                 </div>
             </div>
 
@@ -504,7 +504,7 @@
                 </div>
             </div>
 
-            <div class="info-card">
+            <!-- <div class="info-card">
                 <div class="info-icon">
                     <i class="fas fa-clock"></i>
                 </div>
@@ -512,7 +512,7 @@
                     <strong>Jam Operasional</strong>
                     <p>Senin – Jumat, 08.00 – 17.00</p>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
