@@ -31,7 +31,7 @@
                 <a href="https://www.youtube.com/@RBTVMAKINCAMKOHA" target="_blank" aria-label="YouTube">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@rbtv.co.id&subject=Hubungi%20RBTV%20Review%20System" target="_blank" aria-label="Email">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rbtvdaerah@gmail.com&subject=Hubungi%20RBTV%20Review%20System" target="_blank" aria-label="Email">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
@@ -81,7 +81,7 @@
                     <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                     <div>
                         <span>Email</span>
-                        <a href="mailto:info@rbtv.co.id">info@rbtv.co.id</a>
+                        <a href="mailto:rbtvdaerah@gmail.com">rbtvdaerah@gmail.com</a>
                     </div>
                 </li>
                 <li>

@@ -436,7 +436,7 @@
                     </div>
                 </a>
 
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@rbtv.co.id&subject=Hubungi%20RBTV%20Review%20System" target="_blank" class="sosmed-btn email">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rbtvdaerah@gmail.com&subject=Hubungi%20RBTV%20Review%20System" target="_blank" class="sosmed-btn email">
                     <div class="sosmed-icon">
                         <i class="fas fa-envelope"></i>
                     </div>
@@ -480,7 +480,7 @@
                 </div>
                 <div class="info-text">
                     <strong>Email</strong>
-                    <p>info@rbtv.co.id</p>
+                    <p>rbtvdaerah@gmail.com</p>
                 </div>
             </div>
 
