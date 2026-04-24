@@ -442,7 +442,7 @@
                     </div>
                     <div class="sosmed-btn-label">
                         Email
-                        <span>info@rbtv.co.id</span>
+                        <span>rbtvdaerah@gmail.com</span>
                     </div>
                 </a>
 
