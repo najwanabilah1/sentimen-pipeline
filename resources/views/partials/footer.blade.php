@@ -22,16 +22,16 @@
 
             {{-- SOSMED --}}
             <div class="footer-sosmed">
-                <a href="https://wa.me/6281234567890" target="_blank" aria-label="WhatsApp">
+                <a href="https://wa.me/6282186599322" target="_blank" aria-label="WhatsApp">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                <a href="https://instagram.com/rbtv" target="_blank" aria-label="Instagram">
+                <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqbHR4c1ZMWHRCbHVjZXczSHp2ekxXbUYtTFg5d3xBQ3Jtc0ttLVd4dG8yN0RWZ3RYbnJqRkNtOWp6MXhkLTBCbkpSTjlhdHVQbUU2NGkyaUZzbUFRN201My1zc1BOMGxqZW91RlVReUo3SGY0UE9xbzQ3WkNITzR4MnhvQTJPS1RGS1g5ck5fMGVvM2tWeTJoOW9KOA&q=https%3A%2F%2Fwww.instagram.com%2Frbtvcamkoha%3Figsh%3DMWUwcm9uMmlwbWFxNw%3D%3D" target="_blank" aria-label="Instagram">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+                <a href="https://www.youtube.com/@RBTVMAKINCAMKOHA" target="_blank" aria-label="YouTube">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="mailto:info@rbtv.co.id" aria-label="Email">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rbtvdaerah@gmail.com&subject=Hubungi%20RBTV%20Review%20System" target="_blank" aria-label="Email">
                     <i class="fas fa-envelope"></i>
                 </a>
             </div>
@@ -81,7 +81,7 @@
                     <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                     <div>
                         <span>Email</span>
-                        <a href="mailto:info@rbtv.co.id">info@rbtv.co.id</a>
+                        <a href="mailto:rbtvdaerah@gmail.com">rbtvdaerah@gmail.com</a>
                     </div>
                 </li>
                 <li>
@@ -138,7 +138,7 @@
                 &copy; {{ date('Y') }} <strong>RBTV Review System</strong>. All rights reserved.
             </p>
             <p class="footer-made">
-                Dibuat oleh Mahasiswa <strong>Universitas Bengkulu</strong>
+                Developed by <strong>Sallaa Fikriyatul & Najwa Nabilah</strong>
             </p>
         </div>
     </div>

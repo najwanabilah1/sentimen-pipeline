@@ -317,7 +317,7 @@
     /* ===================== */
     /* DEVELOPER             */
     /* ===================== */
-    .dev-grid {
+    /* .dev-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
@@ -392,7 +392,7 @@
         font-size: 0.78rem;
         color: var(--text-muted);
         font-weight: 500;
-    }
+    } */
 
     /* ===================== */
     /* CTA BANNER            */
@@ -622,7 +622,7 @@
     {{-- ======================== --}}
     {{-- DEVELOPER                --}}
     {{-- ======================== --}}
-    <div class="section">
+    <!-- <div class="section">
         <div class="section-header">
             <h2>Tim Developer</h2>
         </div>
@@ -655,7 +655,7 @@
             </div>
 
         </div>
-    </div>
+    </div> -->
 
     {{-- ======================== --}}
     {{-- CTA BANNER               --}}

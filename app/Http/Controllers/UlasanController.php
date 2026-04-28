@@ -40,9 +40,10 @@ class UlasanController extends Controller
 
         // 2. VALIDASI RECAPTCHA
         $recaptcha = $request->recaptcha_token;
+        $secretKey = env('RECAPTCHA_SECRET_KEY');
 
         $response = file_get_contents(
-            "https://www.google.com/recaptcha/api/siteverify?secret=6LcrmbUsAAAAAAnIuFQHkTxd6AUBk3h7a4oqRUqW&response=".$recaptcha
+            "https://www.google.com/recaptcha/api/siteverify?secret=".$secretKey."&response=".$recaptcha
         );
 
         $result = json_decode($response);
