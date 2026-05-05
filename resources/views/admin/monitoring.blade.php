@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="px-2 sm:px-4 lg:px-6 pt-2 pb-8 max-w-7xl mx-auto space-y-6">
     <!-- HERO SECTION MEGA PREMIUM -->
     <div class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-[0_20px_50px_-12px_rgba(30,27,75,0.5)] group">
@@ -350,12 +351,30 @@
                 renderSchedules();
                 renderCalendar();
                 closeModal();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Jadwal telah disimpan.',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    customClass: { popup: 'rounded-[2rem]' }
+                });
             } else {
-                alert("Gagal menyimpan ke database!");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Gagal menyimpan ke database!',
+                    customClass: { popup: 'rounded-[2rem]' }
+                });
             }
         } catch(err) {
             console.error(err);
-            alert("Terjadi kesalahan jaringan.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan jaringan.',
+                customClass: { popup: 'rounded-[2rem]' }
+            });
         } finally {
             btn.innerHTML = originalText;
             btn.disabled = false;
@@ -383,23 +402,60 @@
     }
 
     async function deleteSchedule(id) {
-        if(confirm('Hapus permanen dari database?')) {
-            try {
-                const res = await fetch(`/admin/monitoring/jadwal/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
-                });
-                const data = await res.json();
-
-                if(data.success) {
-                    schedules = schedules.filter(s => s.id !== id);
-                    renderSchedules();
-                    renderCalendar();
-                }
-            } catch(e) {
-                alert("Gagal menghapus tayangan.");
+        Swal.fire({
+            title: 'Hapus Tayangan?',
+            text: "Hapus permanen dari database?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-[2rem]',
+                confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+                cancelButton: 'rounded-xl font-bold px-6 py-2.5'
             }
-        }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await fetch(`/admin/monitoring/jadwal/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
+                    });
+                    const data = await res.json();
+
+                    if(data.success) {
+                        schedules = schedules.filter(s => s.id !== id);
+                        renderSchedules();
+                        renderCalendar();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Terhapus!',
+                            text: 'Tayangan telah dihapus.',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            customClass: { popup: 'rounded-[2rem]' }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: data.message || 'Gagal menghapus tayangan.',
+                            customClass: { popup: 'rounded-[2rem]' }
+                        });
+                    }
+                } catch(e) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: 'Gagal menghapus tayangan.',
+                        customClass: { popup: 'rounded-[2rem]' }
+                    });
+                }
+            }
+        });
     }
 
     // Init

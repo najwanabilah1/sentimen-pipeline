@@ -2,6 +2,7 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     /* --- ANIMASI & TRANSISI --- */
@@ -62,7 +63,7 @@
                     <span class="font-extrabold text-xs tracking-wide">Laporan Evaluasi</span>
                 </a>
                 
-                <form action="{{ route('admin.sentiment.process') }}" method="POST" class="w-full lg:w-auto shrink-0">
+                <form id="engineForm" action="{{ route('admin.sentiment.process') }}" method="POST" class="w-full lg:w-auto shrink-0">
                     @csrf
                     <button type="submit" class="group relative w-full lg:w-auto bg-white hover:bg-slate-50 text-slate-900 px-7 py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] transition-all duration-300 hover:-translate-y-1 active:scale-95">
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500 group-hover:rotate-12 transition-transform duration-300"></i>
@@ -298,6 +299,40 @@
                         displayColors: false
                     }
                 }
+            }
+        });
+    });
+
+    document.getElementById('engineForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        Swal.fire({
+            title: 'Jalankan Engine AI?',
+            text: "Proses ini akan menganalisis sentimen dari ulasan terbaru.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Ya, Jalankan!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-[2rem]',
+                confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+                cancelButton: 'rounded-xl font-bold px-6 py-2.5'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Memproses AI...',
+                    text: 'Menganalisis ulasan, mohon tunggu.',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+                form.submit();
             }
         });
     });
