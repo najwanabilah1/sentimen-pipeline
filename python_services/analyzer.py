@@ -75,7 +75,7 @@ def analyze():
             text_lower = str(text).strip().lower()
             
             # 1. Rule-based: Kata kunci spesifik yang selalu Netral
-            neutral_keywords = ['bismillah', 'assalamualaikum', 'alhamdulillah', 'tes', 'test', 'hadir', 'nyimak']
+            neutral_keywords = ['bismillah', 'assalamualaikum', 'alhamdulillah', 'tes', 'test', 'hadir', 'nyimak', 'oke siap', 'insyaallah']
             is_explicit_neutral = any(text_lower == kw or text_lower.startswith(kw) for kw in neutral_keywords)
             
             # 2. OOV (Out of Vocabulary): Jika model tidak mengenali satu kata pun

@@ -107,6 +107,30 @@
         </div>
     </div>
 
+    <!-- Action Toolbar (Search & Filter) -->
+    <div class="bg-white p-4 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 animate-fade-in delay-200">
+        <!-- Search -->
+        <div class="relative w-full md:w-[400px] group">
+            <i class="fa-solid fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-sm transition-colors group-focus-within:text-red-500"></i>
+            <input type="text" id="searchInput" oninput="filterBerita()" placeholder="Cari judul konten..." class="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.5rem] text-sm font-bold text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 transition-all shadow-inner">
+        </div>
+        
+        <!-- Filters -->
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative w-full md:w-56">
+                <select id="filterKategori" onchange="filterBerita()" class="w-full bg-slate-50 border border-slate-200 text-slate-600 text-sm font-bold rounded-[1.5rem] pl-5 pr-10 py-3.5 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 appearance-none shadow-sm cursor-pointer transition-all">
+                    <option value="">Semua Kategori</option>
+                    <option value="malam">Malam</option>
+                    <option value="daerah">Daerah</option>
+                    <option value="pekaro">Pekaro</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-5 pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-fade-in delay-200">
         <div class="overflow-x-auto custom-scroll">
             <table class="w-full text-left min-w-[800px]">
@@ -120,7 +144,7 @@
                 </thead>
                 <tbody id="beritasContainer" class="divide-y divide-slate-50">
                     @forelse($beritas as $berita)
-                    <tr id="berita-{{ $berita->id_berita }}" class="hover:bg-slate-50/50 transition-all group">
+                    <tr id="berita-{{ $berita->id_berita }}" class="hover:bg-slate-50/50 transition-all group berita-row" data-judul="{{ strtolower($berita->judul_berita) }}" data-kategori="{{ strtolower($berita->kategori_berita) }}">
                         <td class="px-8 py-6">
                             <div class="flex items-center gap-5">
                                 <div class="relative h-16 w-16 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
@@ -313,15 +337,34 @@ const Toast = Swal.mixin({
 // SweetAlert2 - Simpan/Update
 document.getElementById('beritaForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses...';
-    btn.disabled = true;
+    
+    Swal.fire({
+        title: 'Simpan Publikasi?',
+        text: "Pastikan data berita sudah benar.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'Ya, Simpan!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        customClass: {
+            popup: 'rounded-[2rem]',
+            confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-6 py-2.5'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const btn = document.getElementById('submitBtn');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses...';
+            btn.disabled = true;
 
-    const id = document.getElementById('beritaId').value;
-    const url = id ? `/admin/beritas/${id}` : '/admin/beritas';
-    const formData = new FormData(this);
+            const id = document.getElementById('beritaId').value;
+            const url = id ? `/admin/beritas/${id}` : '/admin/beritas';
+            const formData = new FormData(this);
 
-    fetch(url, {
+            fetch(url, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
         body: formData
@@ -363,7 +406,10 @@ document.getElementById('beritaForm').addEventListener('submit', function(e) {
                 confirmButton: 'rounded-xl font-bold px-8 py-3'
             }
         });
+        btn.innerHTML = originalBtnHtml;
         btn.disabled = false;
+    });
+        }
     });
 });
 
@@ -429,6 +475,43 @@ function openEditModal(id) {
         document.getElementById('beritaModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     });
+}
+
+function filterBerita() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const filterCat = document.getElementById('filterKategori').value;
+    const rows = document.querySelectorAll('.berita-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const judul = row.getAttribute('data-judul');
+        const kategori = row.getAttribute('data-kategori');
+        
+        const matchSearch = judul.includes(searchInput);
+        const matchCat = filterCat === '' || kategori === filterCat;
+        
+        if (matchSearch && matchCat) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    const emptyRow = document.getElementById('emptySearchRow');
+    if (visibleCount === 0 && rows.length > 0) {
+        if (!emptyRow) {
+            const tbody = document.getElementById('beritasContainer');
+            const tr = document.createElement('tr');
+            tr.id = 'emptySearchRow';
+            tr.innerHTML = '<td colspan="4" class="px-8 py-20 text-center text-slate-500 font-bold">Pencarian tidak ditemukan</td>';
+            tbody.appendChild(tr);
+        } else {
+            emptyRow.style.display = '';
+        }
+    } else if (emptyRow) {
+        emptyRow.style.display = 'none';
+    }
 }
 </script>
 @endsection
