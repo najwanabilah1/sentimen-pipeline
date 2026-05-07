@@ -1,0 +1,13 @@
+[33mb7dce505[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33m692e8245[m HEAD@{1}: commit: mm
+[33m5d213320[m HEAD@{2}: commit: dikit
+[33m710f53b2[m HEAD@{3}: commit: email2
+[33m0c55f633[m HEAD@{4}: commit: email
+[33mb3ab75aa[m HEAD@{5}: commit (merge): test Merge branch 'main' of https://github.com/najwanabilah1/sentimen-pipeline
+[33mcd3e2a0a[m HEAD@{6}: commit: test
+[33m3374fbb3[m HEAD@{7}: pull --tags origin main: Merge made by the 'ort' strategy.
+[33mf9d03854[m HEAD@{8}: commit: udah pake captcha, mau testing lagi dan mendalami komputasi kalo history json besar
+[33m58d31927[m HEAD@{9}: commit: bismillah fix, mau testing lagi buat preprocessnya
+[33m11707a59[m HEAD@{10}: commit (merge): Merge branch 'main' of https://github.com/najwanabilah1/sentimen-pipeline
+[33mfc852f1b[m HEAD@{11}: commit: sabar dikit lagi
+[33m01924f69[m HEAD@{12}: clone: from https://github.com/najwanabilah1/sentimen-pipeline

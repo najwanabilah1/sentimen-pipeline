@@ -75,11 +75,11 @@ class PreprocessService
         $venvWindows = base_path('venv\\Scripts\\python.exe');
         $venvUnix    = base_path('venv/bin/python');
 
-        if (file_exists($venvWindows)) {
+        if (file_exists($venvWindows) && self::isPythonExecutableValid($venvWindows)) {
             return $venvWindows;
         }
 
-        if (file_exists($venvUnix)) {
+        if (file_exists($venvUnix) && self::isPythonExecutableValid($venvUnix)) {
             return $venvUnix;
         }
 
@@ -116,5 +116,22 @@ class PreprocessService
 
             return 'python3'; // fallback terakhir
         }
+    }
+
+    private static function isPythonExecutableValid($pythonPath)
+    {
+        $command = escapeshellarg($pythonPath) . ' --version 2>&1';
+        $output = @shell_exec($command);
+        $output = trim((string) $output);
+
+        if (empty($output)) {
+            return false;
+        }
+
+        if (stripos($output, 'did not find executable') !== false) {
+            return false;
+        }
+
+        return true;
     }
 }
