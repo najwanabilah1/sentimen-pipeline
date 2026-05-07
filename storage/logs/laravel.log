@@ -8507,3 +8507,5 @@ Python runtime state: preinitialized
 #56 {main}
 "} 
 [2026-04-13 23:17:57] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-04-13T16:17:23Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
+[2026-05-07 10:55:42] local.INFO: RECAPTCHA RESULT {"success":false,"error-codes":["invalid-input-response"]} 
+[2026-05-07 10:56:07] local.INFO: RECAPTCHA RESULT {"success":false,"error-codes":["invalid-input-response"]} 
