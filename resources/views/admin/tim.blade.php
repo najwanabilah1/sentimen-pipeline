@@ -89,29 +89,30 @@
             <!-- Decorative background blob -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-red-50 blur-[50px] rounded-full pointer-events-none group-hover:bg-red-100 transition-colors"></div>
             
-            <div class="p-5 lg:p-6 relative z-10 flex flex-col flex-1">
+            <div class="p-6 lg:p-8 relative z-10 flex flex-col flex-1">
                 <!-- Header Card -->
-                <div class="flex justify-between items-start mb-5">
-                    <div class="flex items-center gap-3.5 w-full">
-                        <div class="w-12 h-12 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-[1rem] flex items-center justify-center text-slate-500 group-hover:from-red-50 group-hover:to-red-100 group-hover:text-red-500 group-hover:border-red-200 transition-all duration-300 shadow-sm shrink-0">
-                            <span class="text-lg font-black">{{ strtoupper(substr($m->nama, 0, 1)) }}</span>
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex items-center gap-4 w-full">
+                        <div class="w-14 h-14 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl flex items-center justify-center text-slate-500 group-hover:from-red-50 group-hover:to-red-100 group-hover:text-red-500 group-hover:border-red-200 transition-all duration-300 shadow-sm shrink-0">
+                            <span class="text-xl font-black">{{ strtoupper(substr($m->nama, 0, 1)) }}</span>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-start gap-2">
-                                <h4 class="text-base lg:text-lg font-black text-gray-800 leading-tight group-hover:text-red-600 transition-colors line-clamp-1" title="{{ $m->nama }}">{{ $m->nama }}</h4>
-                                <span class="shrink-0 text-[9px] font-black px-2 py-1 {{ $m->status == 'Aktif' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-slate-50 text-slate-500 border border-slate-200' }} rounded-lg uppercase tracking-widest shadow-sm">
-                                    {{ $m->status }}
-                                </span>
-                            </div>
-                            <p class="text-xs font-bold text-red-500 flex items-center gap-1.5 mt-1 truncate">
-                                <i class="fa-solid fa-briefcase text-[10px] opacity-70"></i> {{ $m->posisi }}
+                        <div class="flex-1 min-w-0 pr-2">
+                            <h4 class="text-lg font-black text-gray-800 leading-tight group-hover:text-red-600 transition-colors line-clamp-1" title="{{ $m->nama }}">{{ $m->nama }}</h4>
+                            <p class="text-sm font-bold text-red-500 flex items-center gap-1.5 mt-1 truncate">
+                                <i class="fa-solid fa-briefcase text-[11px] opacity-70"></i> {{ $m->posisi }}
                             </p>
                         </div>
                     </div>
                 </div>
                 
+                <div class="absolute top-6 right-6">
+                    <span class="text-[10px] font-black px-2.5 py-1.5 {{ $m->status == 'Aktif' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-slate-50 text-slate-500 border border-slate-200' }} rounded-xl uppercase tracking-widest shadow-sm">
+                        {{ $m->status }}
+                    </span>
+                </div>
+                
                 <!-- Contact Summary -->
-                <div class="space-y-2.5 mb-5 bg-slate-50/70 p-3.5 rounded-2xl border border-slate-100/50 mt-auto">
+                <div class="space-y-3 mb-6 bg-slate-50/70 p-4 rounded-2xl border border-slate-100/50 mt-auto">
                     <div class="flex items-center gap-3 text-sm text-slate-600 font-medium">
                         <div class="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-slate-400 shadow-sm border border-slate-100/50 shrink-0">
                             <i class="fa-regular fa-envelope text-[11px]"></i>
@@ -127,7 +128,7 @@
                 </div>
                 
                 <!-- Footer Card -->
-                <div class="flex justify-between items-center pt-3.5 border-t border-slate-100 mt-1">
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100 mt-2">
                     <span class="text-[11px] font-bold text-slate-500 tracking-widest uppercase flex items-center gap-2">
                         <i class="fa-solid fa-building text-[10px] opacity-70"></i> {{ $m->departemen }}
                     </span>
@@ -310,40 +311,6 @@
             }
         });
     @endif
-
-    document.getElementById('timForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const form = this;
-        Swal.fire({
-            title: 'Simpan Data?',
-            text: "Pastikan data yang Anda masukkan sudah benar.",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#e11d48',
-            cancelButtonColor: '#94a3b8',
-            confirmButtonText: 'Ya, Simpan!',
-            cancelButtonText: 'Batal',
-            reverseButtons: true,
-            customClass: {
-                popup: 'rounded-[2rem]',
-                confirmButton: 'rounded-xl font-bold px-6 py-2.5',
-                cancelButton: 'rounded-xl font-bold px-6 py-2.5'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Menyimpan...',
-                    text: 'Mohon tunggu sebentar',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading()
-                    }
-                });
-                form.submit();
-            }
-        })
-    });
 
     function confirmDelete(id) {
         Swal.fire({

@@ -8507,11 +8507,3 @@ Python runtime state: preinitialized
 #56 {main}
 "} 
 [2026-04-13 23:17:57] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-04-13T16:17:23Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 11:01:19] local.INFO: RECAPTCHA RESULT {"success":false,"error-codes":["timeout-or-duplicate"]} 
-[2026-05-07 11:05:04] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T04:04:44Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 11:18:27] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T04:18:05Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 11:22:07] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T04:21:39Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 13:07:19] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T06:07:00Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 19:10:19] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T12:09:39Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
-[2026-05-07 19:10:55] local.INFO: RECAPTCHA RESULT {"success":false,"error-codes":["timeout-or-duplicate"]} 
-[2026-05-07 19:12:36] local.INFO: RECAPTCHA RESULT {"success":true,"challenge_ts":"2026-05-07T12:10:57Z","hostname":"127.0.0.1","score":0.9,"action":"submit"} 
